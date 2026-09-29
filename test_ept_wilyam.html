@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test EPT Wilyam</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: #f8fafc;
+        }
+        
+        /* Custom scrollbar for better UI */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* Smooth fade in animation for screens */
+        .animate-fade-in { animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(15px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+
+        /* Styling for the radio button cards */
+        input[type="radio"]:checked + .option-card-content {
+            border-color: #4f46e5; /* Indigo-600 */
+            background-color: #eef2ff; /* Indigo-50 */
+            box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.1), 0 2px 4px -1px rgba(79, 70, 229, 0.06);
+        }
+        
+        input[type="radio"]:checked + .option-card-content .indicator-circle {
+            background-color: #4f46e5;
+            border-color: #4f46e5;
+            color: white;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body class="text-slate-800 min-h-screen flex flex-col relative overflow-x-hidden selection:bg-indigo-200 selection:text-indigo-900">
+
+    <div class="fixed inset-0 z-[-1] bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-indigo-100 via-slate-50 to-blue-50"></div>
+
+    <header class="glass-panel sticky top-0 z-30 border-b border-white/50 shadow-sm transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex justify-between items-center">
+            <div class="flex items-center gap-4 cursor-pointer" onclick="confirmExit()">
+                <div class="bg-gradient-to-br from-indigo-600 to-blue-700 text-white p-2.5 rounded-2xl shadow-lg shadow-indigo-200 transform transition hover:scale-105">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 14l9-5-9-5-9 5 9 5z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 14l9-5-9-5-9 5 9 5z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 14v7" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21H3" />
+                    </svg>
+                </div>
+                <h1 class="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-900 to-blue-800 tracking-tight hidden sm:block">Test EPT Wilyam</h1>
+            </div>
+            
+            <div class="flex items-center gap-4 md:gap-6">
+                <!-- Timer Display (Hidden by default) -->
+                <div id="timer-display" class="hidden items-center gap-2.5 bg-white/80 px-5 py-2.5 rounded-2xl border border-indigo-100 shadow-sm font-mono text-lg font-bold text-indigo-700">
+                    <svg class="w-5 h-5 text-indigo-500 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <span id="time-text">00:00</span>
+                </div>
+                
+                <!-- Cancel Button (Hidden by default, shown during quiz) -->
+                <button id="btn-cancel-header" onclick="confirmExit()" class="hidden items-center gap-2 text-red-600 hover:text-white hover:bg-red-500 font-semibold px-4 py-2.5 rounded-xl transition-all border border-red-200 hover:border-red-500">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    <span class="hidden sm:inline">Batalkan Tes</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow flex flex-col items-center p-4 sm:p-6 lg:p-10 w-full max-w-7xl mx-auto">
+        
+        <div id="start-screen" class="w-full flex flex-col items-center animate-fade-in pt-4 md:pt-12">
+            <div class="text-center mb-16 relative">
+                <div class="inline-block px-4 py-1.5 rounded-full bg-indigo-100 text-indigo-700 font-bold text-sm tracking-widest uppercase mb-6 shadow-sm border border-indigo-200">
+                    Sistem Ujian Standar Kampus
+                </div>
+                <h2 class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-slate-900 mb-6 tracking-tight leading-tight">
+                    Tingkatkan <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-500">Skor EPT</span> Anda
+                </h2>
+                <p class="text-lg md:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed font-medium">
+                    Pilih tingkat kesulitan di bawah ini. Anda akan mengerjakan <strong>30 soal teracak</strong> (Structure & Written Expression) yang dirancang sesuai standar akademik.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
+                <!-- Basic Level Card -->
+                <button onclick="startTest('basic')" class="bg-white/80 backdrop-blur-sm rounded-3xl p-8 text-left border border-white shadow-xl shadow-slate-200/50 hover:shadow-2xl hover:shadow-indigo-200 hover:-translate-y-2 transition-all duration-300 group flex flex-col focus:outline-none focus:ring-4 focus:ring-indigo-200">
+                    <div class="bg-gradient-to-br from-emerald-100 to-teal-50 text-emerald-600 p-5 rounded-2xl mb-6 w-16 h-16 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-inner">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </div>
+                    <h3 class="text-3xl font-bold text-slate-900 mb-4 group-hover:text-emerald-700 transition-colors">Basic</h3>
+                    <p class="text-slate-500 text-base mb-8 flex-grow leading-relaxed">Fundamental grammar rules, simple tenses, subject-verb agreement, and basic prepositions. Cocok untuk pondasi awal.</p>
+                    <div class="w-full flex justify-between items-center border-t border-slate-100 pt-5 mt-auto">
+                        <span class="bg-slate-100 text-slate-600 text-xs font-bold px-3 py-1.5 rounded-lg">30 SOAL</span>
+                        <span class="text-emerald-600 font-bold text-base flex items-center gap-2 group-hover:translate-x-1 transition-transform">Mulai <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></span>
+                    </div>
+                </button>
+
+                <!-- Intermediate Level Card -->
+                <button onclick="startTest('intermediate')" class="bg-white/80 backdrop-blur-sm rounded-3xl p-8 text-left border border-white shadow-xl shadow-slate-200/50 hover:shadow-2xl hover:shadow-indigo-200 hover:-translate-y-2 transition-all duration-300 group flex flex-col focus:outline-none focus:ring-4 focus:ring-indigo-200">
+                    <div class="bg-gradient-to-br from-amber-100 to-orange-50 text-amber-600 p-5 rounded-2xl mb-6 w-16 h-16 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-inner">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                    </div>
+                    <h3 class="text-3xl font-bold text-slate-900 mb-4 group-hover:text-amber-700 transition-colors">Intermediate</h3>
+                    <p class="text-slate-500 text-base mb-8 flex-grow leading-relaxed">Perfect tenses, passive voice, conditionals, gerunds vs. infinitives, and relative clauses. Standar mayoritas EPT Kampus.</p>
+                    <div class="w-full flex justify-between items-center border-t border-slate-100 pt-5 mt-auto">
+                        <span class="bg-slate-100 text-slate-600 text-xs font-bold px-3 py-1.5 rounded-lg">30 SOAL</span>
+                        <span class="text-amber-600 font-bold text-base flex items-center gap-2 group-hover:translate-x-1 transition-transform">Mulai <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></span>
+                    </div>
+                </button>
+
+                <!-- Advance Level Card -->
+                <button onclick="startTest('advance')" class="bg-white/80 backdrop-blur-sm rounded-3xl p-8 text-left border border-white shadow-xl shadow-slate-200/50 hover:shadow-2xl hover:shadow-indigo-200 hover:-translate-y-2 transition-all duration-300 group flex flex-col focus:outline-none focus:ring-4 focus:ring-indigo-200">
+                    <div class="bg-gradient-to-br from-rose-100 to-pink-50 text-rose-600 p-5 rounded-2xl mb-6 w-16 h-16 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-inner">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                    </div>
+                    <h3 class="text-3xl font-bold text-slate-900 mb-4 group-hover:text-rose-700 transition-colors">Advance</h3>
+                    <p class="text-slate-500 text-base mb-8 flex-grow leading-relaxed">Inverted structures, subjunctive mood, reduced relative clauses, and complex parallelism. Level persiapan TOEFL/IELTS.</p>
+                    <div class="w-full flex justify-between items-center border-t border-slate-100 pt-5 mt-auto">
+                        <span class="bg-slate-100 text-slate-600 text-xs font-bold px-3 py-1.5 rounded-lg">30 SOAL</span>
+                        <span class="text-rose-600 font-bold text-base flex items-center gap-2 group-hover:translate-x-1 transition-transform">Mulai <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></span>
+                    </div>
+                </button>
+            </div>
+        </div>
+
+        <div id="quiz-screen" class="w-full hidden max-w-4xl flex flex-col animate-fade-in pt-4">
+            
+            <!-- Progress Tracker -->
+            <div class="mb-8">
+                <div class="flex justify-between items-end mb-3">
+                    <span id="question-counter" class="text-lg md:text-xl font-extrabold text-slate-800">Pertanyaan 1 <span class="text-slate-400 font-medium">dari 30</span></span>
+                    <span id="progress-percent" class="text-indigo-600 font-bold bg-indigo-100 px-3 py-1 rounded-lg text-sm">0% Selesai</span>
+                </div>
+                <div class="w-full bg-slate-200/70 rounded-full h-4 shadow-inner overflow-hidden">
+                    <div id="progress-bar" class="bg-gradient-to-r from-blue-500 to-indigo-600 h-4 rounded-full transition-all duration-700 ease-out relative" style="width: 0%">
+                        <div class="absolute top-0 left-0 w-full h-full bg-white/20 animate-pulse"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question Card -->
+            <div class="bg-white rounded-[2rem] shadow-xl shadow-slate-200/60 border border-slate-100 p-6 md:p-12 mb-8 relative overflow-hidden">
+                <!-- Decorative element -->
+                <div class="absolute -right-16 -top-16 w-32 h-32 bg-indigo-50 rounded-full blur-3xl opacity-60"></div>
+                
+                <h3 id="question-text" class="text-2xl md:text-3xl font-semibold text-slate-900 leading-normal mb-10 relative z-10 selection:bg-indigo-100">
+                    <!-- Question injected here -->
+                </h3>
+
+                <div id="options-container" class="space-y-4 relative z-10">
+                    <!-- Options injected here -->
+                </div>
+            </div>
+
+            <!-- Quiz Controls -->
+            <div class="flex justify-end items-center">
+                <button id="btn-next" onclick="nextQuestion()" disabled class="bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed text-white font-bold py-4 px-12 rounded-2xl shadow-lg hover:shadow-indigo-300 transition-all focus:outline-none focus:ring-4 focus:ring-indigo-200 text-lg sm:text-xl flex items-center gap-3 w-full sm:w-auto justify-center">
+                    Pertanyaan Selanjutnya
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <div id="result-screen" class="w-full hidden flex-col items-center justify-center py-8 animate-fade-in">
+            <div class="bg-white rounded-[2.5rem] shadow-2xl border border-slate-100 p-10 md:p-16 max-w-2xl w-full text-center relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-indigo-50 to-white -z-10"></div>
+                
+                <div class="w-24 h-24 bg-gradient-to-br from-green-400 to-emerald-600 text-white rounded-full flex items-center justify-center mx-auto mb-8 shadow-xl shadow-green-200 transform scale-110">
+                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <h2 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-3 tracking-tight">Tes Selesai!</h2>
+                <p class="text-slate-500 mb-10 text-lg font-medium">Tingkat Kesulitan: <span id="result-level-text" class="font-bold text-indigo-600 uppercase bg-indigo-50 px-3 py-1 rounded-lg ml-2"></span></p>
+                
+                <div class="bg-slate-50 rounded-3xl p-8 mb-8 border border-slate-100 shadow-inner relative overflow-hidden">
+                    <p class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4">Skor Akhir Anda</p>
+                    <div class="flex items-baseline justify-center gap-3">
+                        <span id="final-score" class="text-7xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-600 leading-none">0</span>
+                        <span class="text-4xl font-bold text-slate-300">/</span>
+                        <span class="text-4xl font-bold text-slate-400">30</span>
+                    </div>
+                </div>
+
+                <div class="bg-amber-50/80 rounded-2xl p-5 mb-12 border border-amber-100 flex items-center justify-center gap-4">
+                    <div class="bg-amber-100 p-2 rounded-full">
+                        <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <p class="text-lg font-medium text-amber-900">
+                        Waktu Pengerjaan: <strong id="final-time" class="font-bold text-amber-700 text-xl">0 menit 0 detik</strong>
+                    </p>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button onclick="showReview()" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-6 rounded-2xl shadow-lg hover:shadow-indigo-200 transition-all text-lg flex justify-center items-center gap-3">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                        Review Jawaban
+                    </button>
+                    <button onclick="goHome()" class="flex-1 bg-white hover:bg-slate-50 text-slate-700 border-2 border-slate-200 hover:border-slate-300 font-bold py-4 px-6 rounded-2xl shadow-sm transition-all text-lg flex justify-center items-center gap-2">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                        Kembali Beranda
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="review-screen" class="w-full hidden max-w-5xl flex flex-col animate-fade-in pb-12 pt-4">
+            
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-5 bg-white/90 backdrop-blur-md p-6 rounded-3xl shadow-lg border border-slate-100 sticky top-24 z-20">
+                <div>
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 mb-1">Review Hasil & Penjelasan</h2>
+                    <p class="text-slate-500 font-medium">Pelajari kesalahan Anda untuk persiapan EPT sesungguhnya.</p>
+                </div>
+                <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
+                    <div class="text-sm font-bold px-5 py-3 bg-indigo-50 rounded-xl text-indigo-700 border border-indigo-100 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>
+                        Skor: <span id="review-score" class="text-lg"></span>
+                    </div>
+                    <button onclick="goHome()" class="flex-1 md:flex-none bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 px-6 rounded-xl shadow-md transition-colors whitespace-nowrap flex justify-center items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                        Kembali Beranda
+                    </button>
+                </div>
+            </div>
+
+            <div id="review-container" class="space-y-8">
+                <!-- Review cards injected here via JS -->
+            </div>
+            
+            <div class="flex justify-center mt-12">
+                <button onclick="goHome()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-12 rounded-2xl shadow-xl hover:shadow-indigo-300 transition-all text-xl flex items-center gap-3">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                    Selesai & Kembali ke Beranda
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // 90 Questions Total (30 Basic, 30 Intermediate, 30 Advance)
+        const testData = {
+            basic: [
+                { question: "The student _____ studying for the final examination right now.", options: ["is", "are", "was", "were"], correctAnswer: 0, explanation: "The subject 'student' is singular, and 'right now' indicates present continuous tense." },
+                { question: "She has been working at the university _____ 2015.", options: ["for", "since", "in", "on"], correctAnswer: 1, explanation: "We use 'since' to refer to a specific starting point in time for perfect tenses." },
+                { question: "I don't have _____ money left in my wallet to buy lunch.", options: ["some", "many", "any", "a few"], correctAnswer: 2, explanation: "'Any' is used in negative sentences with uncountable nouns like 'money'." },
+                { question: "The committee _____ scheduled to meet at 10:00 AM tomorrow.", options: ["is", "are", "has", "have"], correctAnswer: 0, explanation: "Collective nouns like 'committee' acting as a single unit take singular verbs." },
+                { question: "If it rains heavily tomorrow, we _____ at home.", options: ["will stay", "stay", "stayed", "would stay"], correctAnswer: 0, explanation: "First Conditional: If + present simple, subject + future simple (will)." },
+                { question: "My brother enjoys _____ novels during his free time.", options: ["to read", "read", "reading", "reads"], correctAnswer: 2, explanation: "The verb 'enjoy' must be followed by a gerund (verb + -ing)." },
+                { question: "He is the professor _____ research paper was published yesterday.", options: ["who", "whom", "whose", "which"], correctAnswer: 2, explanation: "'Whose' is a relative pronoun indicating possession." },
+                { question: "The library is usually closed _____ Sundays.", options: ["in", "at", "on", "by"], correctAnswer: 2, explanation: "We use the preposition 'on' for days of the week." },
+                { question: "Neither the manager nor the employees _____ aware of the policy.", options: ["was", "were", "is", "has been"], correctAnswer: 1, explanation: "With 'neither/nor', the verb agrees with the closest noun ('employees', plural)." },
+                { question: "The package, along with several letters, _____ delivered today.", options: ["was", "were", "have been", "are"], correctAnswer: 0, explanation: "Phrases like 'along with' don't change the subject number. 'Package' is singular." },
+                { question: "I am looking forward to _____ from you soon.", options: ["hear", "hearing", "heard", "be heard"], correctAnswer: 1, explanation: "'Look forward to' ends with a preposition, requiring a gerund (-ing)." },
+                { question: "There _____ many students waiting in the hallway.", options: ["is", "are", "was", "has been"], correctAnswer: 1, explanation: "In 'there is/are' structures, the verb agrees with the noun that follows (many students)." },
+                { question: "She plays the piano very _____.", options: ["good", "well", "better", "best"], correctAnswer: 1, explanation: "An adverb is needed to modify the action verb 'plays'. 'Well' is the adverb." },
+                { question: "They didn't go to the concert, and _____.", options: ["neither did I", "so did I", "I didn't too", "neither I did"], correctAnswer: 0, explanation: "To express agreement with a negative statement, use 'neither + auxiliary + subject'." },
+                { question: "The book is _____ the table next to the lamp.", options: ["in", "on", "at", "over"], correctAnswer: 1, explanation: "'On' is used to indicate position on a surface." },
+                { question: "My car _____ by the mechanic right now.", options: ["repairs", "is repairing", "is being repaired", "was repaired"], correctAnswer: 2, explanation: "Present continuous passive: is/are + being + past participle." },
+                { question: "She _____ to the gym every morning before work.", options: ["go", "goes", "going", "gone"], correctAnswer: 1, explanation: "Simple present for a daily routine with a singular third-person subject." },
+                { question: "I haven't seen him _____ a long time.", options: ["since", "for", "in", "during"], correctAnswer: 1, explanation: "'For' is used to indicate a duration or period of time." },
+                { question: "_____ apples in the basket are red.", options: ["A", "An", "The", "Some of"], correctAnswer: 2, explanation: "'The' is used because we are talking about specific apples (the ones in the basket)." },
+                { question: "He is _____ taller than his older brother.", options: ["much", "more", "very", "too"], correctAnswer: 0, explanation: "'Much' is used to emphasize comparatives (much taller)." },
+                { question: "Everyone in the classroom _____ to pass the exam.", options: ["want", "wants", "wanting", "are wanting"], correctAnswer: 1, explanation: "Indefinite pronouns like 'everyone' take singular verbs." },
+                { question: "They _____ dinner when the phone rang.", options: ["have", "had", "were having", "are having"], correctAnswer: 2, explanation: "Past continuous is used for an action interrupted by another past action." },
+                { question: "Could you please tell me where _____?", options: ["is the bank", "the bank is", "is bank", "bank is"], correctAnswer: 1, explanation: "In embedded questions, the word order changes back to normal subject-verb order." },
+                { question: "We will leave as soon as he _____.", options: ["will arrive", "arrives", "arrived", "is arriving"], correctAnswer: 1, explanation: "In time clauses referring to the future, use the simple present tense." },
+                { question: "That is the house _____ I grew up.", options: ["where", "which", "that", "when"], correctAnswer: 0, explanation: "'Where' is used as a relative adverb to refer to a place." },
+                { question: "I prefer drinking tea _____ drinking coffee.", options: ["than", "to", "over", "from"], correctAnswer: 1, explanation: "The correct preposition to use with 'prefer' is 'to'." },
+                { question: "She speaks English fluently, _____?", options: ["does she", "isn't she", "doesn't she", "hasn't she"], correctAnswer: 2, explanation: "Positive statements require a negative tag question with the matching auxiliary." },
+                { question: "The test was _____ difficult that nobody passed.", options: ["so", "such", "very", "too"], correctAnswer: 0, explanation: "'So + adjective + that' is used to show a result." },
+                { question: "Please turn _____ the lights before you leave.", options: ["of", "off", "out", "down"], correctAnswer: 1, explanation: "'Turn off' is the correct phrasal verb for disconnecting power." },
+                { question: "He has a lot of experience _____ marketing.", options: ["on", "in", "at", "about"], correctAnswer: 1, explanation: "The correct preposition for a field of expertise is 'in' (experience in)." }
+            ],
+            intermediate: [
+                { question: "Despite _____ extremely hard all semester, he barely passed the exam.", options: ["study", "to study", "studying", "studied"], correctAnswer: 2, explanation: "'Despite' is a preposition and must be followed by a noun or gerund (-ing)." },
+                { question: "The textbook _____ by the renowned professor is highly recommended.", options: ["writing", "written", "wrote", "was written"], correctAnswer: 1, explanation: "Reduced relative clause: 'which was written' becomes 'written'." },
+                { question: "By the time we arrive, the lecture _____.", options: ["will start", "started", "will have started", "has started"], correctAnswer: 2, explanation: "Future Perfect ('will have started') describes an action completed before a future point." },
+                { question: "I wish I _____ to the study group meeting last night.", options: ["went", "go", "had gone", "have gone"], correctAnswer: 2, explanation: "Regrets about the past use 'wish' + Past Perfect ('had gone')." },
+                { question: "Not only _____ the scholarship, but she also secured an internship.", options: ["did she win", "she won", "won she", "she did win"], correctAnswer: 0, explanation: "Negative expressions like 'Not only' at the beginning require subject-auxiliary inversion." },
+                { question: "The researchers, _____ equipment was damaged, had to delay the experiment.", options: ["who", "whom", "whose", "that"], correctAnswer: 2, explanation: "'Whose' shows possession (the researchers' equipment)." },
+                { question: "It is essential that the student _____ the assignment on time.", options: ["submits", "submit", "submitted", "will submit"], correctAnswer: 1, explanation: "Expressions of necessity take the subjunctive mood (base verb 'submit')." },
+                { question: "_____ the high cost of living, many choose to live in the city.", options: ["Although", "Even though", "Because of", "In spite of"], correctAnswer: 3, explanation: "'In spite of' is followed by a noun phrase. 'Although' needs a full clause." },
+                { question: "If I _____ you, I would apply for that scholarship immediately.", options: ["am", "was", "were", "have been"], correctAnswer: 2, explanation: "Second conditional uses 'were' for all subjects in formal contexts." },
+                { question: "The more you practice speaking, _____ you will become.", options: ["more fluent", "the more fluent", "the most fluent", "fluent"], correctAnswer: 1, explanation: "Comparative parallel structure: 'The + comparative, the + comparative'." },
+                { question: "He is used _____ up early every morning.", options: ["to wake", "wake", "to waking", "woke"], correctAnswer: 2, explanation: "'Be used to' (accustomed to) is followed by a gerund." },
+                { question: "Scarcely had she finished reading _____ the power went out.", options: ["than", "when", "then", "while"], correctAnswer: 1, explanation: "The correlative conjunction pair is 'Scarcely ... when'." },
+                { question: "The manager objected to _____ personal phone calls during work.", options: ["their make", "them making", "them to make", "they making"], correctAnswer: 1, explanation: "'Object to' requires a gerund. It can be preceded by an object pronoun ('them')." },
+                { question: "Hardly _____ the house when it started to pour.", options: ["I had left", "had I left", "left I", "did I left"], correctAnswer: 1, explanation: "'Hardly' at the start of a sentence causes inversion (auxiliary + subject)." },
+                { question: "The city council decided to _____ the old monument.", options: ["restore", "restoring", "restored", "be restored"], correctAnswer: 0, explanation: "'Decide to' is followed by the base infinitive form of the verb." },
+                { question: "She had her car _____ by a professional mechanic.", options: ["repair", "repairs", "repairing", "repaired"], correctAnswer: 3, explanation: "Causative structure: have + object + past participle (done by someone else)." },
+                { question: "I would rather you _____ here tonight.", options: ["stay", "stayed", "staying", "will stay"], correctAnswer: 1, explanation: "'Would rather' followed by a different subject requires the past tense to express present preference." },
+                { question: "It’s high time you _____ looking for a job.", options: ["start", "started", "starting", "will start"], correctAnswer: 1, explanation: "The phrase 'It's (high) time' is followed by the past tense to imply something should be done now." },
+                { question: "Do you know what time _____?", options: ["does the train leave", "the train leaves", "leaves the train", "the train does leave"], correctAnswer: 1, explanation: "Embedded questions use normal statement word order, not question order." },
+                { question: "He made me _____ my mistakes.", options: ["to realize", "realize", "realizing", "realized"], correctAnswer: 1, explanation: "The causative verb 'make' is followed by the base verb without 'to'." },
+                { question: "I remember _____ him at the conference last year.", options: ["to see", "seeing", "see", "saw"], correctAnswer: 1, explanation: "'Remember + gerund' refers to recalling a past memory." },
+                { question: "No sooner had I arrived _____ it started raining.", options: ["when", "than", "then", "that"], correctAnswer: 1, explanation: "The correct pair for 'No sooner' is 'than'." },
+                { question: "_____ tired, he decided to go to bed early.", options: ["Being", "Been", "To be", "He was"], correctAnswer: 0, explanation: "Participial phrase replacing 'Because he was tired'." },
+                { question: "We will wait here until she _____.", options: ["will call", "calls", "called", "is calling"], correctAnswer: 1, explanation: "Time clauses with 'until' referring to the future use the present simple." },
+                { question: "The student denied _____ on the final examination.", options: ["to cheat", "cheating", "cheat", "cheated"], correctAnswer: 1, explanation: "The verb 'deny' is followed by a gerund." },
+                { question: "Such _____ the force of the explosion that windows shattered.", options: ["was", "is", "were", "has been"], correctAnswer: 0, explanation: "Inversion with 'Such': Such + verb 'to be' + noun." },
+                { question: "You had better _____ your doctor immediately.", options: ["to consult", "consulting", "consult", "consulted"], correctAnswer: 2, explanation: "'Had better' is followed by the base verb without 'to'." },
+                { question: "I am not familiar with the person to _____ you are referring.", options: ["who", "whom", "whose", "which"], correctAnswer: 1, explanation: "After a preposition ('to'), the objective relative pronoun 'whom' must be used." },
+                { question: "The factory is said _____ extensively during the fire.", options: ["to damage", "to have been damaged", "being damaged", "having been damaged"], correctAnswer: 1, explanation: "Passive reporting verb referring to a past passive event requires the perfect passive infinitive." },
+                { question: "We can't rely on him, _____?", options: ["can we", "can't we", "do we", "don't we"], correctAnswer: 0, explanation: "A negative statement requires a positive tag question." }
+            ],
+            advance: [
+                { question: "Had it not been for the mentor's support, the project _____.", options: ["will fail", "would fail", "would have failed", "had failed"], correctAnswer: 2, explanation: "Third Conditional inversion. The main clause requires 'would have + past participle'." },
+                { question: "The architecture of the library is similar to _____ built in the 19th century.", options: ["that of buildings", "those of buildings", "buildings", "what buildings"], correctAnswer: 0, explanation: "Use 'that' to replace a singular noun (architecture) to avoid repetition in comparisons." },
+                { question: "Attached to this email _____ the requested documents.", options: ["are", "is", "have", "has"], correctAnswer: 0, explanation: "Inversion. The true subject is 'the requested documents' (plural), so 'are' is used." },
+                { question: "It is absolutely imperative that the chair _____ the proposal by Friday.", options: ["approves", "approve", "approved", "will approve"], correctAnswer: 1, explanation: "Adjectives of urgency take the subjunctive mood (base verb 'approve')." },
+                { question: "Rarely _____ seen such a spectacular display.", options: ["we have", "have we", "we had", "had we to"], correctAnswer: 1, explanation: "Negative adverbs at the beginning of a sentence require subject-auxiliary inversion." },
+                { question: "Were the CEO to step down, the board _____ immediate action.", options: ["takes", "took", "would take", "will take"], correctAnswer: 2, explanation: "Second Conditional inversion (Were + subject + to-infinitive). Result clause takes 'would + base verb'." },
+                { question: "The professor demanded that the data _____ recollected.", options: ["is", "was", "be", "were"], correctAnswer: 2, explanation: "Verbs of demanding/insisting take the subjunctive mood ('be')." },
+                { question: "By no means _____ considered a final resolution.", options: ["this agreement is", "is this agreement", "this agreement", "does this agreement"], correctAnswer: 1, explanation: "'By no means' at the start forces inversion of the subject and 'be' verb." },
+                { question: "_____ the complex instructions, the technicians operated safely.", options: ["Having understood", "To understand", "Understood", "Understand"], correctAnswer: 0, explanation: "Perfect participle phrase shows an action completed before the main clause." },
+                { question: "The species is known _____ extinct for over three centuries.", options: ["to be", "to have been", "being", "having been"], correctAnswer: 1, explanation: "Present passive referring to a past state requires perfect infinitive ('to have been')." },
+                { question: "So intense _____ the storm that villages were evacuated.", options: ["was", "the storm was", "did", "had"], correctAnswer: 0, explanation: "Inversion: 'So + adjective + verb + subject'." },
+                { question: "The legislation will impact everyone, _____ socioeconomic status.", options: ["regardless of", "in spite", "despite of", "notwithstanding to"], correctAnswer: 0, explanation: "'Regardless of' means without being affected by." },
+                { question: "Only after the evidence was examined _____ the defendant's innocence.", options: ["the jury recognized", "did the jury recognize", "recognized the jury", "the jury did recognize"], correctAnswer: 1, explanation: "'Only after' at the beginning forces subject-auxiliary inversion in the main clause." },
+                { question: "The condition required that he _____ under observation.", options: ["remained", "remains", "remain", "will remain"], correctAnswer: 2, explanation: "The verb 'require' followed by 'that' takes the subjunctive mood (base form)." },
+                { question: "He is believed _____ the country under a false identity.", options: ["fleeing", "to flee", "to have fled", "fled"], correctAnswer: 2, explanation: "Passive reporting of a past action uses perfect infinitive 'to have fled'." },
+                { question: "Seldom _____ such a complicated problem.", options: ["I have encountered", "have I encountered", "I encountered", "do I encountered"], correctAnswer: 1, explanation: "Beginning with the negative adverb 'Seldom' requires subject-auxiliary inversion." },
+                { question: "_____ that we were late, we decided to take a taxi.", options: ["Realize", "Realized", "Realizing", "To realize"], correctAnswer: 2, explanation: "Present participial phrase modifying the subject 'we'." },
+                { question: "Lest the enemy _____ our plans, we must speak in code.", options: ["discovers", "discover", "discovered", "will discover"], correctAnswer: 1, explanation: "'Lest' (meaning 'in order to prevent') is followed by the subjunctive mood." },
+                { question: "The committee proposes that the new rule _____ immediately.", options: ["is implemented", "be implemented", "implements", "will be implemented"], correctAnswer: 1, explanation: "Verbs like 'propose' trigger the subjunctive mood in passive voice ('be + past participle')." },
+                { question: "On no account _____ authorized to enter this restricted area.", options: ["visitors are", "are visitors", "do visitors", "have visitors"], correctAnswer: 1, explanation: "Negative prepositional phrase 'On no account' requires inversion." },
+                { question: "_____ as the most intelligent student, he was given a scholarship.", options: ["Regard", "Regarding", "Regarded", "To regard"], correctAnswer: 2, explanation: "Past participial phrase (passive meaning: because he was regarded)." },
+                { question: "Should you need any further information, please _____ me.", options: ["contacting", "to contact", "contact", "contacted"], correctAnswer: 2, explanation: "Inverted first conditional (If you should need...). Main clause is imperative (base verb)." },
+                { question: "The mechanism was too complex for the novice _____.", options: ["understand", "to understand", "understanding", "understood"], correctAnswer: 1, explanation: "Structure: 'too + adjective + for someone + to-infinitive'." },
+                { question: "Not until the end of the movie _____ the plot twist.", options: ["I realized", "did I realize", "realized I", "I did realize"], correctAnswer: 1, explanation: "'Not until' at the beginning of a sentence causes inversion in the main clause." },
+                { question: "She spoke as if she _____ an expert on the subject, though she wasn't.", options: ["is", "was", "were", "has been"], correctAnswer: 2, explanation: "'As if' expressing a hypothetical or unreal situation takes 'were'." },
+                { question: "_____ that the earth is round was once a revolutionary idea.", options: ["The fact", "That the fact", "Because", "It is"], correctAnswer: 0, explanation: "Noun phrase acting as the subject of the sentence." },
+                { question: "Under no circumstances _____ the switch while the machine is running.", options: ["you should touch", "should you touch", "you touch", "touch you"], correctAnswer: 1, explanation: "Negative introductory phrase requires inversion." },
+                { question: "So fast _____ that he broke the world record.", options: ["he ran", "did he run", "ran he", "he did run"], correctAnswer: 1, explanation: "Inversion with 'So + adverb + auxiliary + subject'." },
+                { question: "I would appreciate _____ me earlier regarding the schedule change.", options: ["you to tell", "your telling", "you tell", "you told"], correctAnswer: 1, explanation: "The verb 'appreciate' takes a gerund, preceded by a possessive adjective." },
+                { question: "The painting, _____ by Picasso, sold for millions.", options: ["which it was painted", "painted", "was painted", "painting"], correctAnswer: 1, explanation: "Reduced relative clause ('which was painted' -> 'painted')." }
+            ]
+        };
+
+        let currentLevel = '';
+        let currentQuestions = [];
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        
+        let timerInterval;
+        let timeElapsed = 0; // in seconds
+
+        // DOM Elements
+        const screenStart = document.getElementById('start-screen');
+        const screenQuiz = document.getElementById('quiz-screen');
+        const screenResult = document.getElementById('result-screen');
+        const screenReview = document.getElementById('review-screen');
+        const timerDisplay = document.getElementById('timer-display');
+        const timeText = document.getElementById('time-text');
+        const btnCancelHeader = document.getElementById('btn-cancel-header');
+
+        function formatTime(seconds) {
+            const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+            const s = (seconds % 60).toString().padStart(2, '0');
+            return `${m}:${s}`;
+        }
+
+        function startTimer() {
+            timeElapsed = 0;
+            timeText.textContent = "00:00";
+            timerDisplay.classList.remove('hidden');
+            timerDisplay.classList.add('flex');
+            
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timeElapsed++;
+                timeText.textContent = formatTime(timeElapsed);
+            }, 1000);
+        }
+
+        function stopTimer() {
+            clearInterval(timerInterval);
+            timerDisplay.classList.remove('flex');
+            timerDisplay.classList.add('hidden');
+        }
+
+        function shuffleArray(array) {
+            let shuffled = array.map(item => ({...item}));
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        function hideAllScreens() {
+            screenStart.classList.add('hidden');
+            screenQuiz.classList.add('hidden');
+            screenResult.classList.add('hidden');
+            screenReview.classList.add('hidden');
+        }
+
+        function startTest(level) {
+            currentLevel = level;
+            
+            // Randomize exactly 30 questions
+            currentQuestions = shuffleArray(testData[level]);
+            currentQuestionIndex = 0;
+            userAnswers = new Array(currentQuestions.length).fill(null);
+            
+            // Show Cancel button in header
+            btnCancelHeader.classList.remove('hidden');
+            btnCancelHeader.classList.add('flex');
+
+            hideAllScreens();
+            screenQuiz.classList.remove('hidden');
+            
+            startTimer();
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const qData = currentQuestions[currentQuestionIndex];
+            
+            // Update Progress UI
+            document.getElementById('question-counter').innerHTML = `Pertanyaan ${currentQuestionIndex + 1} <span class="text-slate-400 font-medium">dari 30</span>`;
+            const progressPercent = ((currentQuestionIndex) / 30) * 100;
+            document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+            document.getElementById('progress-percent').textContent = `${Math.round(progressPercent)}% Selesai`;
+
+            // Setup Question Text
+            document.getElementById('question-text').textContent = qData.question;
+
+            // Setup Options with Interactive Cards
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = ''; 
+            const labels = ['A', 'B', 'C', 'D'];
+
+            qData.options.forEach((optText, index) => {
+                const isSelected = userAnswers[currentQuestionIndex] === index;
+                
+                const labelElement = document.createElement('label');
+                labelElement.className = "cursor-pointer block relative group w-full";
+                
+                labelElement.innerHTML = `
+                    <input type="radio" name="ept-option" class="peer sr-only" value="${index}" onchange="selectOption(${index})" ${isSelected ? 'checked' : ''}>
+                    <div class="option-card-content border-2 rounded-2xl p-5 md:p-6 flex items-center gap-5 transition-all duration-300 border-slate-200 hover:border-indigo-300 bg-white group-hover:bg-indigo-50/30">
+                        <div class="indicator-circle w-12 h-12 rounded-full border-2 border-slate-300 flex-shrink-0 flex items-center justify-center font-bold text-slate-400 transition-all duration-300 text-lg bg-slate-50 group-hover:border-indigo-300 group-hover:text-indigo-400">
+                            ${labels[index]}
+                        </div>
+                        <div class="text-slate-700 font-semibold text-lg md:text-xl flex-grow leading-snug">
+                            ${optText}
+                        </div>
+                    </div>
+                `;
+                optionsContainer.appendChild(labelElement);
+            });
+
+            // Handle Button State
+            const nextBtn = document.getElementById('btn-next');
+            nextBtn.disabled = userAnswers[currentQuestionIndex] === null;
+            
+            if (currentQuestionIndex === 29) { // Last question
+                nextBtn.innerHTML = `Kumpulkan Tes <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>`;
+                nextBtn.className = "bg-emerald-500 hover:bg-emerald-600 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed text-white font-bold py-4 px-12 rounded-2xl shadow-lg hover:shadow-emerald-300 transition-all focus:outline-none focus:ring-4 focus:ring-emerald-200 text-lg sm:text-xl flex items-center gap-3 w-full sm:w-auto justify-center";
+            } else {
+                nextBtn.innerHTML = `Pertanyaan Selanjutnya <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>`;
+                nextBtn.className = "bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed text-white font-bold py-4 px-12 rounded-2xl shadow-lg hover:shadow-indigo-300 transition-all focus:outline-none focus:ring-4 focus:ring-indigo-200 text-lg sm:text-xl flex items-center gap-3 w-full sm:w-auto justify-center";
+            }
+            
+            // Smooth scroll to top of quiz card
+            document.getElementById('quiz-screen').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function selectOption(index) {
+            userAnswers[currentQuestionIndex] = index;
+            document.getElementById('btn-next').disabled = false;
+        }
+
+        function confirmExit() {
+            // Only prompt if a test is currently running
+            if (!screenQuiz.classList.contains('hidden')) {
+                if(confirm("Apakah Anda yakin ingin membatalkan tes? Semua progres saat ini akan hilang.")) {
+                    stopTimer();
+                    goHome();
+                }
+            } else {
+                // If clicked from other screens, just act as a home button
+                goHome();
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < 29) {
+                currentQuestionIndex++;
+                renderQuestion();
+            } else {
+                // Finish sequence
+                stopTimer();
+                document.getElementById('progress-bar').style.width = `100%`;
+                document.getElementById('progress-percent').textContent = `100% Selesai`;
+                
+                // Hide Cancel button on submit
+                btnCancelHeader.classList.remove('flex');
+                btnCancelHeader.classList.add('hidden');
+
+                setTimeout(showResults, 400); 
+            }
+        }
+
+        function showResults() {
+            let score = 0;
+            currentQuestions.forEach((q, index) => {
+                if (userAnswers[index] === q.correctAnswer) {
+                    score++;
+                }
+            });
+
+            document.getElementById('result-level-text').textContent = currentLevel;
+            document.getElementById('final-score').textContent = score;
+            
+            // Format Time in Indonesian
+            const minutes = Math.floor(timeElapsed / 60);
+            const seconds = timeElapsed % 60;
+            document.getElementById('final-time').textContent = `${minutes} menit ${seconds} detik`;
+
+            hideAllScreens();
+            screenResult.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Save score for review header
+            document.getElementById('review-score').textContent = `${score} / 30`;
+        }
+
+        function showReview() {
+            hideAllScreens();
+            screenReview.classList.remove('hidden');
+
+            const container = document.getElementById('review-container');
+            container.innerHTML = '';
+            const labels = ['A', 'B', 'C', 'D'];
+
+            currentQuestions.forEach((q, qIndex) => {
+                const userAnswer = userAnswers[qIndex];
+                const isCorrect = userAnswer === q.correctAnswer;
+                
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-[2rem] shadow-lg shadow-slate-200/50 border border-slate-100 overflow-hidden transition-all hover:shadow-xl";
+                
+                // Card Header
+                let cardHTML = `
+                    <div class="p-6 md:p-8 border-b border-slate-100 ${isCorrect ? 'bg-emerald-50/50' : 'bg-rose-50/50'}">
+                        <div class="flex items-start gap-4">
+                            <div class="mt-1 flex-shrink-0">
+                                ${isCorrect 
+                                    ? `<div class="bg-emerald-100 p-3 rounded-2xl shadow-sm border border-emerald-200"><svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div>`
+                                    : `<div class="bg-rose-100 p-3 rounded-2xl shadow-sm border border-rose-200"><svg class="w-6 h-6 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path></svg></div>`
+                                }
+                            </div>
+                            <div>
+                                <span class="text-sm font-bold text-slate-400 mb-2 block tracking-widest uppercase">Pertanyaan ${qIndex + 1}</span>
+                                <h4 class="text-xl md:text-2xl font-semibold text-slate-900 leading-relaxed">${q.question}</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 md:p-8">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                `;
+
+                // Rendering Options in Review
+                q.options.forEach((optText, optIndex) => {
+                    let optStyle = "border-slate-200 text-slate-500 bg-slate-50 opacity-60"; 
+                    let iconStyle = "border-slate-300 text-slate-400 bg-white";
+                    let badge = "";
+
+                    if (optIndex === q.correctAnswer) {
+                        optStyle = "border-emerald-400 bg-emerald-50/50 text-emerald-900 shadow-md shadow-emerald-100/50 opacity-100";
+                        iconStyle = "bg-emerald-500 text-white border-transparent";
+                        badge = `<span class="ml-auto text-[10px] font-bold px-2.5 py-1.5 rounded-lg bg-emerald-200 text-emerald-800 uppercase tracking-widest">Kunci Jawaban</span>`;
+                    } else if (optIndex === userAnswer && !isCorrect) {
+                        optStyle = "border-rose-400 bg-rose-50/50 text-rose-900 shadow-md shadow-rose-100/50 opacity-100";
+                        iconStyle = "bg-rose-500 text-white border-transparent";
+                        badge = `<span class="ml-auto text-[10px] font-bold px-2.5 py-1.5 rounded-lg bg-rose-200 text-rose-800 uppercase tracking-widest">Pilihan Anda</span>`;
+                    } else if (optIndex === userAnswer && isCorrect) {
+                        badge = `<span class="ml-auto text-[10px] font-bold px-2.5 py-1.5 rounded-lg bg-emerald-200 text-emerald-800 uppercase tracking-widest">Pilihan Anda</span>`;
+                    }
+
+                    cardHTML += `
+                        <div class="border-2 rounded-2xl p-4 flex items-center gap-4 ${optStyle} transition-all">
+                            <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center font-bold text-sm rounded-full border-2 ${iconStyle}">
+                                ${labels[optIndex]}
+                            </div>
+                            <span class="font-semibold text-base">${optText}</span>
+                            ${badge}
+                        </div>
+                    `;
+                });
+
+                // Explanation Block
+                cardHTML += `
+                        </div>
+                        <div class="bg-indigo-50/80 rounded-2xl p-6 md:p-8 border border-indigo-100 relative overflow-hidden">
+                            <div class="absolute left-0 top-0 bottom-0 w-2 bg-indigo-500"></div>
+                            <h5 class="text-sm font-extrabold text-indigo-900 uppercase tracking-widest mb-3 flex items-center gap-2">
+                                <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                Penjelasan
+                            </h5>
+                            <p class="text-slate-700 text-lg leading-relaxed pl-2">${q.explanation}</p>
+                        </div>
+                    </div>
+                `;
+
+                card.innerHTML = cardHTML;
+                container.appendChild(card);
+            });
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goHome() {
+            stopTimer();
+            // Ensure cancel button is hidden on home screen
+            btnCancelHeader.classList.remove('flex');
+            btnCancelHeader.classList.add('hidden');
+            
+            hideAllScreens();
+            screenStart.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
