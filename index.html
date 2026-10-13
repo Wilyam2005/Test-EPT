@@ -56,11 +56,28 @@
 
         body { background-color: #f4f7f3; color: var(--ink); }
 
+        main { position: relative; z-index: 1; }
+
+        #ambient-scene {
+            position: fixed;
+            z-index: 0;
+            inset: 0;
+            display: block;
+            width: 100%;
+            height: 100%;
+            opacity: 0.34;
+            pointer-events: none;
+        }
+
         .app-backdrop {
             background-color: #f4f7f3;
-            background-image: radial-gradient(#cbd8cf 0.7px, transparent 0.7px);
-            background-size: 22px 22px;
-            opacity: 0.62;
+            background-image:
+                radial-gradient(#cbd8cf 0.7px, transparent 0.7px),
+                linear-gradient(118deg, rgba(117, 194, 155, 0.13), transparent 38%),
+                linear-gradient(250deg, rgba(241, 182, 126, 0.11), transparent 40%);
+            background-size: 22px 22px, 100% 100%, 100% 100%;
+            background-repeat: repeat, no-repeat, no-repeat;
+            opacity: 0.82;
         }
 
         header.glass-panel { border-color: rgba(220, 230, 223, 0.9); }
@@ -84,7 +101,7 @@
             align-items: center;
             gap: 1.5rem;
             width: 100%;
-            margin-bottom: 3.25rem;
+            margin-bottom: 2.25rem;
         }
 
         .hero-copy { max-width: 640px; margin-bottom: 0; text-align: left; }
@@ -116,15 +133,88 @@
             background-image: linear-gradient(110deg, #087f70, #39a875);
         }
 
-        #start-screen > .grid > button {
+        #start-screen > .grid { gap: 1.25rem; }
+
+        #start-screen > .grid > .level-card {
+            position: relative;
+            isolation: isolate;
+            overflow: hidden;
+            min-height: 330px;
+            padding: 1.75rem;
             border: 1px solid var(--line);
-            border-radius: 18px;
-            box-shadow: 0 10px 28px rgba(24, 50, 38, 0.07);
+            border-radius: 20px;
+            box-shadow: 0 14px 34px rgba(24, 50, 38, 0.08);
+            transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
         }
 
-        #start-screen > .grid > button:hover {
-            border-color: #8bbcaf;
-            box-shadow: 0 18px 34px rgba(24, 80, 61, 0.12);
+        .level-card::before {
+            position: absolute;
+            z-index: -1;
+            inset: 0 0 auto;
+            height: 4px;
+            content: "";
+        }
+
+        .level-card-basic {
+            background: linear-gradient(145deg, #effaf4 0%, rgba(255, 255, 255, 0.97) 58%);
+            border-color: #d3eadc !important;
+        }
+
+        .level-card-basic::before { background: #239c72; }
+
+        .level-card-intermediate {
+            background: linear-gradient(145deg, #fff8e9 0%, rgba(255, 255, 255, 0.97) 58%);
+            border-color: #f0e2c3 !important;
+        }
+
+        .level-card-intermediate::before { background: #d9982d; }
+
+        .level-card-advance {
+            background: linear-gradient(145deg, #fff1f2 0%, rgba(255, 255, 255, 0.97) 58%);
+            border-color: #f0d8dc !important;
+        }
+
+        .level-card-advance::before { background: #db5870; }
+
+        .level-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 22px 42px rgba(24, 50, 38, 0.13);
+        }
+
+        .level-card-basic:hover { border-color: #8bbcaf !important; }
+        .level-card-intermediate:hover { border-color: #dfbd7c !important; }
+        .level-card-advance:hover { border-color: #dfa0aa !important; }
+
+        .level-kicker {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            margin-bottom: 1.15rem;
+            color: #53665e;
+            font-size: 0.68rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .level-kicker span:last-child {
+            border-radius: 999px;
+            padding: 0.35rem 0.55rem;
+            background: rgba(255, 255, 255, 0.72);
+            letter-spacing: 0.04em;
+        }
+
+        .level-card h3 { font-size: 1.75rem; }
+
+        .level-card > div:last-child {
+            border-color: rgba(100, 116, 109, 0.16);
+            padding-top: 1rem;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .level-card { transition: none; }
+            .level-card:hover { transform: none; }
         }
 
         #quiz-screen .mb-8 > div:first-child span:first-child { color: var(--ink); }
@@ -136,12 +226,32 @@
             box-shadow: 0 16px 40px rgba(24, 50, 38, 0.08);
         }
 
-        .option-card-content { border-radius: 14px; }
+        @keyframes question-arrive {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes option-arrive {
+            from { opacity: 0; transform: translateY(9px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        #question-text.question-enter { animation: question-arrive 360ms cubic-bezier(0.2, 0.7, 0.25, 1) both; }
+        #options-container > label {
+            animation: option-arrive 340ms cubic-bezier(0.2, 0.7, 0.25, 1) both;
+            animation-delay: calc(var(--option-index, 0) * 55ms);
+        }
+
+        .option-card-content {
+            border-radius: 14px;
+            transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
+        }
         .option-card-content:hover { border-color: #8bbcaf; }
         input[type="radio"]:checked + .option-card-content {
             border-color: var(--accent);
             background-color: #edf7f2;
             box-shadow: 0 4px 12px rgba(8, 127, 112, 0.1);
+            transform: translateX(3px);
         }
 
         input[type="radio"]:checked + .option-card-content .indicator-circle {
@@ -154,14 +264,85 @@
             box-shadow: 0 8px 18px rgba(8, 127, 112, 0.18);
         }
 
-        #btn-next:not(:disabled):hover { background: var(--accent-dark); }
+        #btn-next { transition: transform 180ms ease, background-color 180ms ease, box-shadow 180ms ease; }
+        #btn-next:not(:disabled):hover {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            #question-text.question-enter,
+            #options-container > label { animation: none; }
+            .option-card-content,
+            #btn-next { transition: none; }
+        }
 
         #review-screen > div:first-child { border-radius: 16px; }
 
+        #timer-display {
+            color: var(--accent-dark);
+            border-color: #c5e5d6;
+            background: rgba(248, 252, 249, 0.94);
+        }
+        #timer-display svg { color: var(--accent); }
+        #result-level-text {
+            color: var(--accent-dark);
+            background-color: #e1f2eb;
+        }
+        #final-score { background-image: linear-gradient(110deg, #087f70, #39a875); }
+        #review-score { color: var(--accent-dark); }
+        #review-screen > div:first-child > div:last-child > div:first-child {
+            color: var(--accent-dark);
+            background-color: #e1f2eb;
+            border-color: #c5e5d6;
+        }
+        #review-screen > div:first-child > div:last-child > div:first-child svg { color: var(--accent); }
+        #review-container > div > div:last-child > div:last-child {
+            background-color: #fff8e9;
+            border-color: #f0e2c3;
+        }
+        #review-container > div > div:last-child > div:last-child > div:first-child { background-color: #d9982d; }
+        #review-container > div > div:last-child > div:last-child h5 { color: #805a1b; }
+        #review-container > div > div:last-child > div:last-child h5 svg { color: #a97620; }
+
         @media (max-width: 640px) {
+            header > div { height: 64px; }
+            main { padding-top: 0.75rem; padding-bottom: 0.75rem; }
             #start-screen > .text-center { margin-bottom: 2.5rem; }
             #start-screen > .grid { gap: 1rem; }
-            #quiz-screen > div:nth-child(2) { border-radius: 16px; }
+            #quiz-screen { padding-top: 0; }
+            #quiz-screen > div:first-child { margin-bottom: 0.65rem; }
+            #quiz-screen > div:first-child .mb-3 { margin-bottom: 0.4rem; }
+            #quiz-screen > div:first-child > div:last-child,
+            #quiz-screen > div:first-child > div:last-child > div { height: 0.45rem; }
+            #quiz-screen > div:nth-child(2) {
+                margin-bottom: 0.75rem;
+                padding: 1rem;
+                border-radius: 16px;
+            }
+            #question-text {
+                margin-bottom: 0.75rem;
+                font-size: 1.25rem;
+                line-height: 1.35;
+            }
+            #options-container > label + label { margin-top: 0.5rem; }
+            .option-card-content { gap: 0.75rem; padding: 0.65rem 0.8rem; }
+            .indicator-circle { width: 2.5rem; height: 2.5rem; font-size: 1rem; }
+            .option-card-content > div:last-child { font-size: 1rem; line-height: 1.3; }
+            #btn-next { padding: 0.7rem 1rem; font-size: 1rem; }
+            #result-screen { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+            #result-screen > div { padding: 1.25rem; border-radius: 18px; }
+            #review-screen { padding-top: 0; }
+            #review-screen > div:first-child {
+                top: 4.5rem;
+                gap: 0.75rem;
+                margin-bottom: 1rem;
+                padding: 1rem;
+                border-radius: 14px;
+            }
+            #review-screen > div:first-child h2 { font-size: 1.2rem; line-height: 1.35; }
+            #review-container > div > div { padding: 1rem; }
+            #review-container > div > div:last-child > div:last-child { padding: 1rem; }
         }
 
         @media (max-width: 767px) {
@@ -171,9 +352,91 @@
             .study-scene { height: 230px; }
         }
 
+        @media (min-width: 768px) and (max-height: 850px) {
+            header > div { height: 64px; }
+            main { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+            #start-screen { padding-top: 0.25rem; }
+            .home-hero { margin-bottom: 0.75rem; }
+            .study-scene { height: 220px; }
+            #start-screen > .grid > .level-card {
+                min-height: 250px;
+                padding: 1.15rem;
+            }
+            .level-kicker { margin-bottom: 0.65rem; }
+            .level-card > div:nth-of-type(1) {
+                width: 3.25rem;
+                height: 3.25rem;
+                margin-bottom: 0.8rem;
+                padding: 0.65rem;
+                border-radius: 14px;
+            }
+            .level-card h3 { margin-bottom: 0.5rem; }
+            .level-card p { margin-bottom: 0.9rem; }
+            #quiz-screen { padding-top: 0; }
+            #quiz-screen > div:first-child { margin-bottom: 0.75rem; }
+            #quiz-screen > div:first-child .mb-3 { margin-bottom: 0.4rem; }
+            #quiz-screen > div:first-child > div:last-child,
+            #quiz-screen > div:first-child > div:last-child > div { height: 0.55rem; }
+            #quiz-screen > div:nth-child(2) {
+                margin-bottom: 0.75rem;
+                padding: 1.25rem 1.6rem;
+            }
+            #question-text {
+                margin-bottom: 0.9rem;
+                font-size: 1.45rem;
+                line-height: 1.3;
+            }
+            #options-container > label + label { margin-top: 0.5rem; }
+            .option-card-content { gap: 0.9rem; padding: 0.5rem 0.85rem; }
+            .indicator-circle { width: 2.5rem; height: 2.5rem; font-size: 1rem; }
+            .option-card-content > div:last-child { font-size: 1rem; line-height: 1.25; }
+            #btn-next { padding-top: 0.65rem; padding-bottom: 0.65rem; }
+        }
+
+        @media (min-width: 768px) and (max-height: 760px) {
+            header > div { height: 58px; }
+            main { padding-top: 0.4rem; padding-bottom: 0.4rem; }
+            #quiz-screen > div:first-child { margin-bottom: 0.5rem; }
+            #quiz-screen > div:nth-child(2) {
+                margin-bottom: 0.5rem;
+                padding: 0.9rem 1.25rem;
+            }
+            #question-text { margin-bottom: 0.6rem; font-size: 1.3rem; }
+            #options-container > label + label { margin-top: 0.3rem; }
+            .option-card-content { padding: 0.4rem 0.75rem; }
+            .indicator-circle { width: 2.25rem; height: 2.25rem; }
+            #btn-next { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+        }
+
         .home-hero.scene-unavailable { grid-template-columns: 1fr; }
         .scene-unavailable .hero-copy { margin-inline: auto; text-align: center; }
         .scene-unavailable .hero-copy > p { margin-inline: auto; }
+
+        @media (max-width: 640px) {
+            header > div.max-w-7xl { height: 64px; }
+            main.flex-grow { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+        }
+
+        @media (min-width: 641px) and (max-width: 1023px) {
+            #start-screen > .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+        }
+
+        @media (min-width: 768px) and (max-height: 850px) {
+            header > div.max-w-7xl { height: 64px; }
+            main.flex-grow { padding-top: 0.4rem; padding-bottom: 0.4rem; }
+            .home-hero { gap: 1rem; margin-bottom: 0.5rem; }
+            .home-hero > .hero-copy { margin-bottom: 0; }
+            .home-hero .eyebrow { margin-bottom: 0.75rem; }
+            .home-hero h2 { margin-bottom: 0.65rem; font-size: 2.75rem; line-height: 1.08; }
+            .home-hero p { font-size: 1rem; line-height: 1.45; }
+            .study-scene { height: 240px; }
+            #start-screen > .grid > .level-card { min-height: 230px; padding: 0.95rem; }
+        }
+
+        @media (min-width: 768px) and (max-height: 760px) {
+            header > div.max-w-7xl { height: 58px; }
+            main.flex-grow { padding-top: 0.4rem; padding-bottom: 0.4rem; }
+        }
 
         @media (prefers-reduced-motion: reduce) {
             .animate-fade-in { animation-duration: 0.01ms; }
@@ -183,6 +446,7 @@
 <body class="text-slate-800 min-h-screen flex flex-col relative overflow-x-hidden selection:bg-emerald-200 selection:text-emerald-950">
 
     <div class="app-backdrop fixed inset-0 z-[-1]"></div>
+    <canvas id="ambient-scene" aria-hidden="true"></canvas>
 
     <header class="glass-panel sticky top-0 z-30 border-b border-white/50 shadow-sm transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex justify-between items-center">
@@ -237,7 +501,8 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
                 <!-- Basic Level Card -->
-                <button onclick="startTest('basic')" class="bg-white/80 backdrop-blur-sm rounded-3xl p-8 text-left border border-white shadow-xl shadow-slate-200/50 hover:shadow-2xl hover:shadow-indigo-200 hover:-translate-y-2 transition-all duration-300 group flex flex-col focus:outline-none focus:ring-4 focus:ring-indigo-200">
+                <button onclick="startTest('basic')" class="level-card level-card-basic text-left group flex flex-col focus:outline-none focus:ring-4 focus:ring-emerald-200">
+                    <span class="level-kicker"><span>Level 01</span><span>Foundation</span></span>
                     <div class="bg-gradient-to-br from-emerald-100 to-teal-50 text-emerald-600 p-5 rounded-2xl mb-6 w-16 h-16 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-inner">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                     </div>
@@ -250,7 +515,8 @@
                 </button>
 
                 <!-- Intermediate Level Card -->
-                <button onclick="startTest('intermediate')" class="bg-white/80 backdrop-blur-sm rounded-3xl p-8 text-left border border-white shadow-xl shadow-slate-200/50 hover:shadow-2xl hover:shadow-indigo-200 hover:-translate-y-2 transition-all duration-300 group flex flex-col focus:outline-none focus:ring-4 focus:ring-indigo-200">
+                <button onclick="startTest('intermediate')" class="level-card level-card-intermediate text-left group flex flex-col focus:outline-none focus:ring-4 focus:ring-amber-200">
+                    <span class="level-kicker"><span>Level 02</span><span>Campus standard</span></span>
                     <div class="bg-gradient-to-br from-amber-100 to-orange-50 text-amber-600 p-5 rounded-2xl mb-6 w-16 h-16 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-inner">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
                     </div>
@@ -263,7 +529,8 @@
                 </button>
 
                 <!-- Advance Level Card -->
-                <button onclick="startTest('advance')" class="bg-white/80 backdrop-blur-sm rounded-3xl p-8 text-left border border-white shadow-xl shadow-slate-200/50 hover:shadow-2xl hover:shadow-indigo-200 hover:-translate-y-2 transition-all duration-300 group flex flex-col focus:outline-none focus:ring-4 focus:ring-indigo-200">
+                <button onclick="startTest('advance')" class="level-card level-card-advance text-left group flex flex-col focus:outline-none focus:ring-4 focus:ring-rose-200">
+                    <span class="level-kicker"><span>Level 03</span><span>Advanced</span></span>
                     <div class="bg-gradient-to-br from-rose-100 to-pink-50 text-rose-600 p-5 rounded-2xl mb-6 w-16 h-16 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-inner">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
                     </div>
@@ -506,6 +773,115 @@
         const timeText = document.getElementById('time-text');
         const btnCancelHeader = document.getElementById('btn-cancel-header');
 
+        function initializeAmbientScene() {
+            const canvas = document.getElementById('ambient-scene');
+            const THREE = window.THREE;
+
+            if (!THREE) {
+                canvas.hidden = true;
+                return;
+            }
+
+            let renderer;
+            try {
+                renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: false, powerPreference: 'low-power' });
+            } catch (error) {
+                canvas.hidden = true;
+                return;
+            }
+
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+            renderer.setClearColor(0x000000, 0);
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 80);
+            camera.position.z = 22;
+
+            const objects = [
+                { geometry: new THREE.TorusKnotGeometry(0.85, 0.025, 90, 8, 2, 3), color: 0x16846f, scale: 1, speed: 0.16 },
+                { geometry: new THREE.IcosahedronGeometry(0.95, 1), color: 0xc18c43, scale: 1, speed: -0.12 },
+                { geometry: new THREE.TorusGeometry(0.9, 0.025, 8, 72), color: 0x548e80, scale: 1.1, speed: 0.1 },
+                { geometry: new THREE.OctahedronGeometry(0.85, 0), color: 0xc16c70, scale: 1.1, speed: -0.14 },
+                { geometry: new THREE.TorusKnotGeometry(0.62, 0.02, 72, 7, 2, 3), color: 0x8caa70, scale: 0.9, speed: 0.13 }
+            ].map((item, index) => {
+                const material = new THREE.MeshBasicMaterial({
+                    color: item.color,
+                    wireframe: true,
+                    transparent: true,
+                    opacity: 0.34,
+                    depthWrite: false
+                });
+                const mesh = new THREE.Mesh(item.geometry, material);
+                mesh.scale.setScalar(item.scale);
+                mesh.userData = { speed: item.speed, phase: index * 1.2, baseY: 0 };
+                scene.add(mesh);
+                return mesh;
+            });
+
+            function resizeScene() {
+                const width = window.innerWidth;
+                const height = window.innerHeight;
+                renderer.setSize(width, height, false);
+                camera.aspect = width / height;
+                camera.updateProjectionMatrix();
+
+                const compact = width < 900;
+                objects.forEach((object, index) => {
+                    const side = index % 2 === 0 ? -1 : 1;
+                    const row = Math.floor(index / 2);
+                    object.position.x = compact ? side * 2.5 : side * (13 + row * 0.35);
+                    object.userData.baseX = object.position.x;
+                    object.userData.baseY = compact ? 5.3 - row * 5.2 : 5.2 - row * 5.1;
+                    object.position.y = object.userData.baseY;
+                    object.position.z = -2 - row * 0.7;
+                });
+            }
+
+            const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            let animationFrame = 0;
+            let lastRenderTime = 0;
+
+            function animate(time) {
+                animationFrame = 0;
+                if (document.hidden) return;
+
+                if (time - lastRenderTime >= 33 || lastRenderTime === 0) {
+                    objects.forEach((object, index) => {
+                        const phase = object.userData.phase + time * 0.00035;
+                        object.rotation.x += object.userData.speed * 0.032;
+                        object.rotation.y -= object.userData.speed * 0.042;
+                        object.position.y = object.userData.baseY + Math.sin(phase) * 0.36;
+                        object.position.x = object.userData.baseX + Math.sin(phase * 0.7 + index) * 0.16;
+                    });
+                    renderer.render(scene, camera);
+                    lastRenderTime = time;
+                }
+
+                if (!reducedMotion) animationFrame = window.requestAnimationFrame(animate);
+            }
+
+            function startAnimation() {
+                if (reducedMotion) {
+                    renderer.render(scene, camera);
+                } else if (!document.hidden && !animationFrame) {
+                    animationFrame = window.requestAnimationFrame(animate);
+                }
+            }
+
+            function stopAnimation() {
+                if (!animationFrame) return;
+                window.cancelAnimationFrame(animationFrame);
+                animationFrame = 0;
+            }
+
+            resizeScene();
+            window.addEventListener('resize', resizeScene);
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) stopAnimation();
+                else startAnimation();
+            });
+            startAnimation();
+        }
+
         function initializeBookScene() {
             const canvas = document.getElementById('book-scene');
             const sceneElement = document.getElementById('study-scene');
@@ -674,6 +1050,7 @@
             }
         }
 
+        initializeAmbientScene();
         initializeBookScene();
 
         function formatTime(seconds) {
@@ -746,7 +1123,11 @@
             document.getElementById('progress-percent').textContent = `${Math.round(progressPercent)}% Selesai`;
 
             // Setup Question Text
-            document.getElementById('question-text').textContent = qData.question;
+            const questionText = document.getElementById('question-text');
+            questionText.classList.remove('question-enter');
+            questionText.textContent = qData.question;
+            void questionText.offsetWidth;
+            questionText.classList.add('question-enter');
 
             // Setup Options with Interactive Cards
             const optionsContainer = document.getElementById('options-container');
@@ -758,6 +1139,7 @@
                 
                 const labelElement = document.createElement('label');
                 labelElement.className = "cursor-pointer block relative group w-full";
+                labelElement.style.setProperty('--option-index', index);
                 
                 labelElement.innerHTML = `
                     <input type="radio" name="ept-option" class="peer sr-only" value="${index}" onchange="selectOption(${index})" ${isSelected ? 'checked' : ''}>
