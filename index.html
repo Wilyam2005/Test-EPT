@@ -441,6 +441,26 @@
         @media (prefers-reduced-motion: reduce) {
             .animate-fade-in { animation-duration: 0.01ms; }
         }
+
+        /* Tombol menuju latihan TOEFL ITP */
+        .toefl-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-top: 1.5rem;
+            padding: 0.9rem 1.5rem;
+            border-radius: 14px;
+            background: var(--accent);
+            color: #fff;
+            font-weight: 700;
+            font-size: 1rem;
+            text-decoration: none;
+            box-shadow: 0 8px 18px rgba(8, 127, 112, 0.2);
+            transition: transform 180ms ease, background-color 180ms ease;
+        }
+        .toefl-link:hover { background: var(--accent-dark); transform: translateY(-2px); }
+        .toefl-link:focus-visible { outline: 3px solid #39a875; outline-offset: 3px; }
+        @media (prefers-reduced-motion: reduce) { .toefl-link { transition: none; } }
     </style>
 </head>
 <body class="text-slate-800 min-h-screen flex flex-col relative overflow-x-hidden selection:bg-emerald-200 selection:text-emerald-950">
@@ -492,6 +512,11 @@
                 <p class="text-lg md:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed font-medium">
                     Pilih tingkat kesulitan di bawah ini. Setiap kali tes dimulai, urutan <strong>30 soal akan diacak ulang</strong> (Structure & Written Expression) sesuai tingkat yang Anda pilih.
                 </p>
+                <!-- Tombol menuju latihan TOEFL ITP (pastikan quiz-toefl-itp.html ada di folder yang sama) -->
+                <a href="quiz-toefl-itp.html" class="toefl-link">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                    Latihan TOEFL ITP (100 Soal)
+                </a>
             </div>
             <div class="study-scene" id="study-scene">
                 <canvas id="book-scene" role="img" aria-label="Ilustrasi buku latihan EPT tiga dimensi"></canvas>
