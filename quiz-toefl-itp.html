@@ -25,7 +25,7 @@ button{font:inherit;cursor:pointer}
 @media(prefers-color-scheme:dark){.btn{color:#0f1426}}
 .btn.alt{background:transparent;color:var(--accent);border:1.5px solid var(--accent)}
 .btn:disabled{opacity:.4;cursor:not-allowed}
-.btn:focus-visible,.choice:focus-visible,.tts:focus-visible{outline:3px solid var(--accent2);outline-offset:2px}
+.btn:focus-visible,.choice:focus-visible{outline:3px solid var(--accent2);outline-offset:2px}
 .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
 .row .btn{flex:1 1 150px}
 .bar{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0 8px;border-bottom:1px solid var(--line)}
@@ -50,7 +50,8 @@ button{font:inherit;cursor:pointer}
 .fb strong{display:block;margin-bottom:4px}
 .fb.ok strong{color:var(--ok)}.fb.bad strong{color:var(--bad)}
 .note{margin-top:8px;padding:8px 10px;border-radius:8px;background:var(--warnbg);color:var(--warn);font-size:14px}
-.tts{background:transparent;border:1.5px solid var(--accent2);color:var(--accent2);border-radius:99px;padding:6px 14px;font-weight:600;font-size:14px}
+.script{background:var(--bg);border-left:4px solid var(--accent);padding:12px 14px;border-radius:6px;margin:10px 0;font-size:16px;white-space:pre-line}
+.script .slabel{display:block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
 .score{font-family:Georgia,serif;font-size:64px;color:var(--accent);line-height:1}
 .tbl{width:100%;border-collapse:collapse;margin-top:12px;font-size:15px}
 .tbl td,.tbl th{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left}
@@ -65,7 +66,7 @@ button{font:inherit;cursor:pointer}
 <div id="menu" class="menu">
   <div class="hero">
     <h1>Kuis TOEFL ITP</h1>
-    <p>100 soal dengan pembahasan berbahasa Indonesia. Skor benar dan salah dihitung otomatis.</p>
+    <p>100 soal dengan pembahasan berbahasa Indonesia. Semua soal Listening berbentuk teks (transkrip). Skor benar dan salah dihitung otomatis.</p>
   </div>
   <div class="card">
     <h2 style="font-size:20px">Pilih materi</h2>
@@ -96,77 +97,77 @@ const q=(s,t,o,a,e)=>D.push({s,t,o,a,e});
 const E=(t,a,e)=>q("SA",t,["A","B","C","D"],a,e);
 
 const SEC={
-LA:{n:"Listening · Bagian A: Dialog Singkat",g:"L",i:"Dengarkan dialog (tombol putar audio) lalu jawab pertanyaan. Di tes asli audio hanya diputar sekali."},
-LB:{n:"Listening · Bagian B: Monolog Pendek",g:"L",i:"Fokus pada gagasan utama dan detail yang disebut pembicara."},
-LC:{n:"Listening · Bagian C: Dialog/Diskusi Kompleks",g:"L",i:"Perhatikan keputusan akhir yang disepakati pembicara."},
-SA:{n:"Structure · A: Error Recognition",g:"S",i:"Tandai bagian (A/B/C/D) yang salah."},
-SB:{n:"Structure · B: Sentence Completion",g:"S",i:"Pilih jawaban terbaik."},
-R1:{n:"Reading · Passage 1: Photosynthesis Basics",g:"R",i:"Baca passage lalu jawab pertanyaan.",p:"Photosynthesis is the process by which green plants convert sunlight into chemical energy. In chloroplasts, chlorophyll captures light, primarily in blue and red wavelengths. The absorbed energy drives two main stages: the light-dependent reactions and the Calvin cycle. In the first stage, water molecules split, producing oxygen and transferring energy to ATP and NADPH. In the Calvin cycle, the plant uses ATP and NADPH to transform carbon dioxide into glucose."},
-R2:{n:"Reading · Passage 2: Urbanization and Public Health",g:"R",i:"Baca passage lalu jawab pertanyaan.",p:"Urbanization is growing fast and brings health problems: disease transmission, pollution, and sanitation issues. Poor people in cities are most at risk. Governments improve waste systems, hospitals, and promote health education. Sustainable designs help lower disease and improve life."},
-R3:{n:"Reading · Passage 3: Industrial Revolution Overview",g:"R",i:"Baca passage lalu jawab pertanyaan.",p:"The Industrial Revolution changed production. Before, goods were handmade. Factories increased output but caused labor problems. Reformers pushed for labor laws. By mid-19th century, regulations were made."}
+LA:{n:"Listening · Bagian A: Dialog Singkat",g:"L",i:"Audio diganti teks. Baca transkrip dialog di bawah, lalu jawab pertanyaannya."},
+LB:{n:"Listening · Bagian B: Monolog Pendek",g:"L",i:"Audio diganti teks. Baca transkrip monolog di bawah, lalu fokus pada gagasan utama dan detail."},
+LC:{n:"Listening · Bagian C: Diskusi",g:"L",i:"Audio diganti teks. Baca transkrip diskusi di bawah, lalu perhatikan keputusan akhir yang disepakati."},
+SA:{n:"Structure · A: Error Recognition",g:"S",i:"Tandai bagian (A/B/C/D) yang salah. Huruf menandai awal setiap bagian bergaris bawah."},
+SB:{n:"Structure · B: Sentence Completion",g:"S",i:"Pilih jawaban terbaik untuk melengkapi kalimat."},
+R1:{n:"Reading · Passage 1: Photosynthesis Basics",g:"R",i:"Baca passage lalu jawab pertanyaan.",p:"Photosynthesis is the process by which green plants convert sunlight into chemical energy. It takes place in chloroplasts, where chlorophyll captures light, primarily in the blue and red wavelengths. The absorbed energy drives two main stages: the light-dependent reactions and the Calvin cycle. In the first stage, water molecules are split, producing oxygen and transferring energy to ATP and NADPH, two molecules that carry energy. In the Calvin cycle, the plant uses ATP and NADPH to transform carbon dioxide into glucose. The rate of photosynthesis depends on light intensity, the amount of carbon dioxide, and temperature; at low temperatures the process slows down. Scientists study photosynthesis closely because a better understanding of it helps them develop engineered crops, meaning crops that have been genetically modified, so that plants can adapt better to changing conditions."},
+R2:{n:"Reading · Passage 2: Urbanization and Public Health",g:"R",i:"Baca passage lalu jawab pertanyaan.",p:"Urbanization is growing fast and brings serious health problems. In crowded cities, diseases spread more easily, pollution levels rise, and sanitation systems become overburdened, meaning overloaded and unable to handle the number of residents. Poor people in cities are most at risk because they often live in crowded housing with limited services. Governments respond by improving waste management systems, building and upgrading hospitals, and promoting health education, which teaches people how to prevent illness. Cities are also turning to sustainable design, which includes green spaces and public transit. Cleaner cities have fewer respiratory illnesses, and sustainable design lowers disease and improves quality of life. Unplanned urban sprawl, in contrast, makes these problems worse."},
+R3:{n:"Reading · Passage 3: Industrial Revolution Overview",g:"R",i:"Baca passage lalu jawab pertanyaan.",p:"The Industrial Revolution changed the way goods were produced. Before factories, goods were handmade by individual workers in homes and small workshops. Inventions such as the steam engine and mechanized looms, which are looms driven by machines, allowed factories to produce far more goods than before. This higher output, however, came with costs: workers faced long hours and unsafe conditions, and pollution spread widely in industrial cities. Reformers pushed for labor laws, and public debate arose over economic growth versus the rights of workers. By the middle of the nineteenth century, the first regulations had been introduced to protect workers."}
 };
 const GN={L:"Listening Comprehension",S:"Structure & Written Expression",R:"Reading Comprehension"};
 
 /* ---------- LISTENING A ---------- */
-q("LA","A: Are you going to the faculty meeting today?\nB: No, it’s been canceled.\nWhat does the woman say about the meeting?",["It’s on schedule","It’s postponed","It’s canceled","She’s attending"],2,"B menyebut meeting “been canceled”, artinya rapat dibatalkan, bukan ditunda.");
-q("LA","A: Do you want cream or sugar with your coffee?\nB: Just cream, thanks.\nWhat does the man want in his coffee?",["Sugar","Cream","Both","Neither"],1,"B menjawab “Just cream”, jadi ia hanya ingin krim.");
+q("LA","A: Are you going to the faculty meeting today?\nB: No, it’s been canceled.\nWhat does speaker B say about the meeting?",["It’s on schedule","It’s postponed","It’s canceled","B is attending"],2,"B menyebut meeting “been canceled”, artinya rapat dibatalkan, bukan ditunda.");
+q("LA","A: Do you want cream or sugar with your coffee?\nB: Just cream, thanks.\nWhat does speaker B want in the coffee?",["Sugar","Cream","Both","Neither"],1,"B menjawab “Just cream”, jadi ia hanya ingin krim.");
 q("LA","A: Where is the student ID office located?\nB: On the first floor of the administration building.\nWhere should they go?",["Library","Administration building","Student center","Cafeteria"],1,"Lokasi disebut jelas: “administration building” lantai satu.");
 q("LA","A: How much does this textbook cost?\nB: It’s around $45, but you can get it used for $30.\nWhat’s the price of the used textbook?",["$45","$30","$15","$60"],1,"$45 adalah harga baru. Harga bekas disebut “used for $30”.");
 q("LA","A: When is the paper due?\nB: Next Wednesday at noon.\nWhen is the deadline?",["Wednesday morning","Wednesday noon","Tuesday evening","Thursday noon"],1,"Batas waktunya “Wednesday at noon”, yaitu Rabu siang pukul 12.");
-q("LA","A: Did you enjoy the concert last night?\nB: Yes, especially the violin solo.\nWhat did the man enjoy most?",["The piano solo","The drum performance","The violin solo","The opening group"],2,"B menyebut “especially the violin solo”, yaitu bagian yang paling ia nikmati.");
-q("LA","A: Can I borrow your calculator?\nB: Sorry, I need it for my exam.\nWhy can’t she lend the calculator?",["She lost it","She needs it","It’s broken","It’s her property"],1,"B tidak bisa meminjamkan karena ia sendiri membutuhkan kalkulator untuk ujiannya.");
-q("LA","A: Are you registering for the seminar?\nB: Yes, but I need to pay the fee first.\nWhat does she need to do before registering?",["Send an email","Find the seminar schedule","Pay the fee","Get approval"],2,"B harus “pay the fee first”, yaitu membayar biaya sebelum mendaftar.");
-q("LA","A: Have you finished the reading assignment?\nB: Not yet, I’m halfway through Chapter 4.\nHow far has he read?",["Chapter 2","Chapter 3","Half of Chapter 4","Chapter 5"],2,"“Halfway through Chapter 4” berarti baru membaca separuh Bab 4.");
+q("LA","A: Did you enjoy the concert last night?\nB: Yes, especially the violin solo.\nWhat did speaker B enjoy most?",["The piano solo","The drum performance","The violin solo","The opening group"],2,"B menyebut “especially the violin solo”, yaitu bagian yang paling ia nikmati.");
+q("LA","A: Can I borrow your calculator?\nB: Sorry, I need it for my exam.\nWhy can’t speaker B lend the calculator?",["B lost it","B needs it","It’s broken","It belongs to someone else"],1,"B tidak bisa meminjamkan karena ia sendiri membutuhkan kalkulator untuk ujiannya.");
+q("LA","A: Are you registering for the seminar?\nB: Yes, but I need to pay the fee first.\nWhat does speaker B need to do before registering?",["Send an email","Find the seminar schedule","Pay the fee","Get approval"],2,"B harus “pay the fee first”, yaitu membayar biaya sebelum mendaftar.");
+q("LA","A: Have you finished the reading assignment?\nB: Not yet, I’m halfway through Chapter 4.\nHow far has speaker B read?",["Chapter 2","Chapter 3","Half of Chapter 4","Chapter 5"],2,"“Halfway through Chapter 4” berarti baru membaca separuh Bab 4.");
 q("LA","A: Is the chemistry lab available this afternoon?\nB: Yes, it’s free between 2 and 4 PM.\nWhen is the lab available?",["1–2 PM","2–4 PM","3–5 PM","Not available"],1,"B memberi rentang waktu kosong pukul 2 sampai 4 sore.");
 
 /* ---------- LISTENING B ---------- */
-q("LB","“Today’s lecture covers the water cycle: evaporation, condensation, precipitation, and collection…”\nWhat is the main topic?",["Ocean currents","Water cycle","Weather forecasting","River ecosystems"],1,"Topik utama disebut di awal: “the water cycle”. Empat tahap sesudahnya hanyalah rinciannya.");
-q("LB","“In cell division, mitosis ensures that each daughter cell receives a full set of chromosomes…”\nWhat process is described?",["Photosynthesis","Mitosis","Meiosis","Respiration"],1,"Kata kunci “mitosis” disebut langsung. Meiosis menghasilkan setengah set kromosom, jadi tidak cocok.");
-q("LB","“Economic inflation refers to the increasing prices of goods and services over time, which reduces purchasing power…”\nWhat does inflation reduce?",["Currency value","Loan interest","Government spending","Import taxes"],0,"Inflasi menurunkan daya beli (purchasing power), yang berarti nilai uang berkurang.");
-q("LB","“The Great Barrier Reef … facing threats from climate change and overfishing…”\nWhat threatens the reef?",["Volcanoes","Desertification","Climate change","Urbanization"],2,"Dua ancaman disebut, yaitu climate change dan overfishing. Hanya climate change yang ada di pilihan.");
-q("LB","“To make ethical decisions, one must weigh pros and cons … utilitarianism or deontology…”\nWhat is the speaker focusing on?",["Business ethics","Financial planning","Scientific method","Communication skills"],0,"Pembicara membahas pengambilan keputusan etis dan teori moral (utilitarianism, deontology). Pilihan terdekat adalah business ethics.");
-q("LB","“In Shakespeare’s ‘Hamlet,’ the prince struggles with revenge, mortality, and mental unrest…”\nWhat character issue is mentioned?",["Love","Madness","Friendship","Betrayal"],1,"“Mental unrest” (gejolak batin) mengarah pada kegilaan atau madness.");
-q("LB","“A balanced diet includes carbohydrates, proteins, fats… proteins build tissues…”\nWhich nutrient builds tissues?",["Carbohydrates","Fats","Proteins","Vitamins"],2,"Teks menyatakan langsung “proteins build tissues”.");
-q("LB","“Mount Everest … dangers like altitude sickness, extreme cold, and avalanches…”\nWhat danger isn’t mentioned?",["Altitude sickness","Avalanches","Rockfalls","Extreme cold"],2,"Hanya tiga bahaya yang disebut: altitude sickness, extreme cold, avalanches. Rockfalls tidak disebut. Perhatikan kata NOT/isn’t pada pertanyaan.");
-q("LB","“Behavioral economists … explore biases like loss aversion and overconfidence…”\nWhich bias is cited?",["Framing effect","Anchoring","Loss aversion","Herding"],2,"Bias yang disebut adalah loss aversion (dan overconfidence). Pilihan lain tidak muncul.");
-q("LB","“Coral reefs host thousands of species … but 50% have been lost in the last 30 years…”\nHow much reef has been lost?",["10%","30%","50%","70%"],2,"Persentasenya disebut langsung: 50%. Angka 30 adalah jangka waktu (30 tahun), jebakan yang umum.");
+q("LB","Today’s lecture covers the water cycle. We’ll look at four stages: evaporation, condensation, precipitation, and collection.\nWhat is the main topic of the lecture?",["Ocean currents","The water cycle","Weather forecasting","River ecosystems"],1,"Topik utama disebut di awal: “the water cycle”. Empat tahap sesudahnya hanyalah rinciannya.");
+q("LB","In cell division, mitosis ensures that each daughter cell receives a full set of chromosomes identical to the parent cell.\nWhat process is described?",["Photosynthesis","Mitosis","Meiosis","Respiration"],1,"Kata kunci “mitosis” disebut langsung. Meiosis menghasilkan setengah set kromosom, jadi tidak cocok.");
+q("LB","Inflation refers to the rise in prices of goods and services over time. As prices rise, each unit of currency buys less, which reduces purchasing power.\nWhat does inflation reduce?",["Purchasing power","Loan interest","Government spending","Import taxes"],0,"Teks menyatakan inflasi “reduces purchasing power”, yaitu menurunkan daya beli.");
+q("LB","The Great Barrier Reef is facing serious threats. Rising ocean temperatures caused by climate change are bleaching the coral, and overfishing is damaging the ecosystem.\nWhich of the following threatens the reef?",["Volcanoes","Desertification","Climate change","Urbanization"],2,"Dua ancaman disebut, yaitu climate change dan overfishing. Hanya climate change yang ada di pilihan.");
+q("LB","To make ethical decisions, one must weigh the pros and cons of each choice. Two well-known frameworks are utilitarianism, which focuses on outcomes, and deontology, which focuses on duties.\nWhat is the speaker discussing?",["Ethical decision-making","Financial planning","The scientific method","Communication skills"],0,"Pembicara membahas cara mengambil keputusan etis dan dua kerangka moral (utilitarianism dan deontology).");
+q("LB","In Shakespeare’s Hamlet, the prince struggles with revenge and mortality. Throughout the play, it is unclear whether his madness is real or pretended.\nWhich issue about the main character is mentioned?",["Love","Madness","Friendship","Betrayal"],1,"Teks menyebut “his madness”, yaitu kegilaan sang pangeran. Pilihan lain tidak disebut.");
+q("LB","A balanced diet includes carbohydrates, proteins, and fats. Carbohydrates provide energy, and proteins build and repair tissues.\nWhich nutrient builds tissues?",["Carbohydrates","Fats","Proteins","Vitamins"],2,"Teks menyatakan langsung bahwa protein membangun dan memperbaiki jaringan tubuh.");
+q("LB","Climbing Mount Everest is extremely dangerous. Climbers face altitude sickness, extreme cold, and avalanches.\nWhich danger is NOT mentioned?",["Altitude sickness","Avalanches","Rockfalls","Extreme cold"],2,"Hanya tiga bahaya yang disebut: altitude sickness, extreme cold, avalanches. Rockfalls tidak disebut. Perhatikan kata NOT pada pertanyaan.");
+q("LB","Behavioral economists study how people actually make decisions. They explore biases such as loss aversion, where losses feel worse than equal gains, and overconfidence.\nWhich bias is mentioned?",["Framing effect","Anchoring","Loss aversion","Herding"],2,"Bias yang disebut adalah loss aversion (dan overconfidence). Pilihan lain tidak muncul.");
+q("LB","Coral reefs host thousands of species, but 50 percent of them have been lost in the last 30 years.\nHow much of the reef has been lost?",["10%","30%","50%","70%"],2,"Persentasenya disebut langsung: 50%. Angka 30 adalah jangka waktu (30 tahun), jebakan yang umum.");
 
 /* ---------- LISTENING C ---------- */
-q("LC","Students debate beach vs. forest; choose forest because professor specializes in botany.\nWhy did they pick the forest?",["Easier access","Botany focus","Better weather","Cheaper trip"],1,"Alasan langsung disebutkan: dosen mereka ahli botani, jadi hutan dipilih.");
-q("LC","Colleagues hire assistant; want both technical & communication skills.\nWhat qualities do they want?",["Technical only","Communication only","Both technical & communication","Leadership"],2,"Keputusan menyebut kedua kemampuan (“both sets”), bukan salah satu.");
-q("LC","Teacher & student set plan: reading + peer review.\nWhat’s their plan?",["Grammar drills only","Peer review only","Reading & peer review","Online quizzes"],2,"Mereka sepakat menggabungkan membaca dan peer review.");
-q("LC","Researchers choose mixed-method combining surveys + interviews.\nWhat method did they choose?",["Surveys","Interviews","Mixed-method","Observation"],2,"Metodenya disebut langsung, yaitu mixed-method (gabungan survei dan wawancara).");
-q("LC","Team sets interim milestones every two weeks.\nHow often will they meet?",["Weekly","Bi-weekly","Monthly","Quarterly"],1,"Setiap dua minggu sama dengan bi-weekly.");
-q("LC","Grading: homework 20%, midterm 30%, final 50%.\nHow much is the final exam worth?",["20%","30%","50%","100%"],2,"Komposisi nilai disebut jelas: ujian akhir bernilai 50%.");
-q("LC","Students decide to analyze passages, tidak menerjemah.\nWhat did they decide?",["Translate it","Analyze passages","Do both","Ignore the text"],1,"Keputusannya “analyze and discuss”, bukan menerjemah.");
-q("LC","Scientists agree to monitor both temperature and pH.\nWhat will they monitor?",["Temperature only","pH only","Both temperature and pH","Pressure"],2,"Kata kunci “monitor both” berarti keduanya diamati.");
-q("LC","Book club kompromi: Wednesday afternoon.\nWhen is the club meeting?",["Tuesday evening","Wednesday afternoon","Saturday morning","Thursday morning"],1,"Hasil kompromi mereka: Rabu sore.");
-q("LC","Student akan lakukan tiga eksperimen lagi sebelum menulis.\nWhat will the student do next?",["Publish immediately","Do three more tests","Stop research","Write without data"],1,"Disepakati mengumpulkan tiga eksperimen lagi sebelum menulis.");
+q("LC","A: Should we do the field trip at the beach or in the forest?\nB: The forest, I think. Our professor specializes in botany.\nA: Good point. Let’s go with the forest.\nWhy did they choose the forest?",["Easier access","The professor’s botany focus","Better weather","Cheaper trip"],1,"Alasan disebutkan langsung: dosen mereka ahli botani (“specializes in botany”).");
+q("LC","A: We need to hire an assistant for the department.\nB: Right. Someone with technical skills, but also good communication skills.\nA: Agreed, we need both.\nWhat qualities do they want in the assistant?",["Technical skills only","Communication skills only","Both technical and communication skills","Leadership skills"],2,"Keduanya sepakat membutuhkan “both”, yaitu kemampuan teknis dan komunikasi.");
+q("LC","A: How should we spend our tutoring sessions?\nB: Let’s start with reading, and then do peer review of my essays.\nA: Sounds good.\nWhat is their plan?",["Grammar drills only","Peer review only","Reading and peer review","Online quizzes"],2,"Mereka sepakat menggabungkan membaca dan peer review.");
+q("LC","A: Should we use only surveys?\nB: Surveys alone won’t be enough. Let’s add interviews too.\nA: A mixed-method approach, then.\nWhat method did they choose?",["Surveys only","Interviews only","Mixed-method","Observation"],2,"Metodenya disebut langsung, yaitu mixed-method (gabungan survei dan wawancara).");
+q("LC","A: How often should the team check progress?\nB: Every two weeks should work.\nA: Fine, an interim milestone every two weeks.\nHow often will they meet?",["Every week","Every two weeks","Every month","Every quarter"],1,"“Every two weeks” berarti dua minggu sekali.");
+q("LC","A: What’s the grading breakdown for this course?\nB: Homework is 20 percent, the midterm is 30 percent, and the final exam is 50 percent.\nHow much is the final exam worth?",["20%","30%","50%","100%"],2,"Komposisi nilai disebut jelas: ujian akhir bernilai 50 persen.");
+q("LC","A: Should we translate this passage into our own language?\nB: I think we’ll learn more if we analyze and discuss it instead.\nA: Okay, let’s do that.\nWhat did they decide to do?",["Translate it","Analyze and discuss it","Do both","Skip the text"],1,"Keputusannya “analyze and discuss”, bukan menerjemahkan.");
+q("LC","A: We should record the water temperature.\nB: And the pH, too.\nA: Okay, we’ll monitor both.\nWhat will they monitor?",["Temperature only","pH only","Both temperature and pH","Pressure"],2,"Kata kunci “monitor both” berarti suhu dan pH diamati.");
+q("LC","A: Tuesday evening doesn’t work for me.\nB: Saturday morning is hard for me, too. How about Wednesday afternoon?\nA: That works.\nWhen will the book club meet?",["Tuesday evening","Wednesday afternoon","Saturday morning","Thursday morning"],1,"Hasil kompromi mereka: Rabu sore (“Wednesday afternoon”).");
+q("LC","A: Is your data ready for the paper?\nB: Not yet. I’ll run three more experiments before I start writing.\nWhat will the student do next?",["Publish immediately","Run three more experiments","Stop the research","Write without data"],1,"B akan menjalankan tiga eksperimen lagi sebelum mulai menulis.");
 
 /* ---------- STRUCTURE A: ERROR RECOGNITION ---------- */
-E("The committee (A) have decided (B) to postpone (C) the meeting (D) until next Monday.",0,"“Committee” dipakai sebagai satu kesatuan (singular), jadi kata kerjanya “has decided”, bukan “have decided”.");
-E("Each of the students (A) is required (B) to submit their (C) assignments (D) by Friday.",2,"“Each” bersubjek singular. Kunci: “their” diganti “his or her” (dan “assignments” menjadi singular “assignment”).");
-E("The professor, along with her assistants, (A) are preparing (B) the final exam (C) for next week (D).",0,"Subjek sebenarnya “The professor” (singular). Frasa “along with …” tidak mengubah jumlah subjek, jadi “is preparing”.");
-E("Not only (A) the students (B) but also (C) the teacher (D) were excited about the results.",0,"Kunci dokumen: A. Catatan: kalimat ini berpola “not only … but also …” dengan kata kerja mengikuti subjek terdekat. “The teacher” singular, sehingga kata kerja yang tepat “was”, bukan “were”. Tinjau kembali jika kamu memakainya sebagai bahan latihan resmi.");
-E("If he (A) had known about the meeting, he (B) would have attended (C) it but (D) he didn’t.",3,"Conditional type 3 menyatakan hal yang tidak terjadi. Bagian “but he didn’t” redundan dengan makna kalimat, sehingga bagian D dianggap salah menurut kunci. Pola benar: “If he had known…, he would have attended it.”");
-E("Neither the manager (A) nor the employees (B) wants (C) to change (D) the project scope.",2,"Pada “neither … nor”, kata kerja mengikuti subjek terdekat, yaitu “employees” (jamak). Maka “want”, bukan “wants”.");
-E("By the time we arrived, the lecture (A) already (B) had started (C) an hour (D) ago.",1,"Urutan kata salah. Posisi “already” sebaiknya setelah “had” (“had already started”). Catatan: “ago” juga janggal dengan past perfect.");
-E("She suggested that he (A) attends (B) the seminar (C) to learn more (D) about renewable energy.",0,"Setelah “suggested that” dipakai subjunctive: kata kerja bentuk dasar tanpa -s, yaitu “attend”.");
-E("The data, which (A) was collected (B) last month, show (C) a significant (D) increase in sales.",0,"“Data” adalah bentuk jamak, jadi “were collected”. Perhatikan konsistensi dengan “show” yang sudah jamak.");
-E("Hardly had she entered the room (A) when (B) all the lights suddenly (C) goes (D) on.",3,"Cerita berada di masa lampau, jadi “goes” harus “went”.");
-E("The team will begin the presentation (A) at 10 AM (B) tomorrow, and (C) then (D) they will answer questions.",3,"“They” redundan karena subjek sama dengan klausa pertama. Cukup “…and then answer questions.”");
-E("Despite (A) of the fact (B) that he studied hard, (C) he did (D) not pass the exam.",1,"Frasa yang benar “Despite the fact that …”. Kata “of” tidak dipakai setelah despite.");
-E("Although she (A) is tired, she (B) still (C) working (D) on the project.",3,"Perlu kata kerja bantu untuk present continuous: “is still working”. Kunci menandai bagian D.");
-E("The book required (A) for the course are (B) listed (C) at the university (D) bookstore.",0,"Kata kerja “are” bersubjek jamak, jadi “The books required …”. Kunci menandai bagian A (subjeknya).");
-E("Between (A) you and I, there (B) isn’t (C) much difference (D) in results.",0,"Setelah preposisi dipakai bentuk objek: “Between you and me”.");
-E("They were discussing (A) whether (B) they should to implement (C) the new policy (D) next month.",2,"Setelah modal “should” dipakai kata kerja dasar tanpa “to”: “should implement”.");
-E("Everyone in the class, including Jake, (A) have (B) to complete (C) the assignment (D) today.",1,"“Everyone” bersubjek singular, jadi “has to complete”.");
-E("Neither the proposal (A) nor the funding (B) were (C) adequate enough (D) for the project.",3,"“Adequate enough” redundan karena adequate sudah berarti cukup. Pilih salah satu. Catatan: “were” juga sebaiknya “was” (subjek terdekat “funding” singular).");
-E("If she (A) would have known (B) about the issue, she (C) would help (D) prevent it.",0,"Conditional type 3: klausa if memakai past perfect, yaitu “If she had known”, bukan “would have known”.");
-E("More than fifty percent (A) of the students (B) has (C) completed (D) the survey.",2,"Subjeknya “students” (jamak), jadi “have completed”.");
+E("The committee (A) have decided (B) to postpone (C) the meeting (D) until next Monday.",0,"Bagian A. “Committee” dipakai sebagai satu kesatuan (singular), jadi kata kerjanya “has decided”, bukan “have decided”.");
+E("Each of the students (A) are required (B) to submit (C) a final paper (D) by Friday.",0,"Bagian A. Subjek “Each” selalu singular, jadi “is required”, bukan “are required”.");
+E("The professor, along with her assistants, (A) are preparing (B) the final exam (C) for next week (D).",0,"Bagian A. Subjek sebenarnya “The professor” (singular). Frasa “along with …” tidak mengubah jumlah subjek, jadi “is preparing”.");
+E("Not only (A) the students (B) but also (C) the teacher (D) were excited about the results.",3,"Bagian D. Pada “not only … but also …”, kata kerja mengikuti subjek terdekat. “The teacher” singular, jadi “was excited”, bukan “were excited”.");
+E("If the weather (A) had been better, we (B) would have go (C) to the beach (D) yesterday.",1,"Bagian B. Setelah “would have” dipakai past participle: “would have gone”, bukan “would have go”.");
+E("Neither the manager (A) nor the employees (B) wants (C) to change (D) the project scope.",2,"Bagian C. Pada “neither … nor”, kata kerja mengikuti subjek terdekat, yaitu “employees” (jamak). Jadi “want”, bukan “wants”.");
+E("By the time we arrived, the lecture (A) already (B) had started (C) an hour (D) ago.",3,"Bagian D. “Ago” dipakai dengan simple past. Dengan past perfect (“had started”), gunakan “before”, misalnya “an hour before”.");
+E("She suggested that he (A) attends (B) the seminar (C) to learn more (D) about renewable energy.",0,"Bagian A. Setelah “suggested that” dipakai subjunctive: kata kerja bentuk dasar tanpa -s, yaitu “attend”.");
+E("The data, which (A) was collected (B) last month, show (C) a significant (D) increase in sales.",0,"Bagian A. “Data” adalah bentuk jamak, jadi “were collected”.");
+E("Hardly had she entered the room (A) when (B) all the lights suddenly (C) goes (D) on.",2,"Bagian C. Cerita berada di masa lampau (“Hardly had she entered”), jadi “goes” harus “went”.");
+E("The team will begin the presentation (A) at 10 AM (B) tomorrow, and then (C) will answered (D) questions from the audience.",3,"Bagian D. Setelah “will” dipakai kata kerja bentuk dasar: “will answer”, bukan “will answered”.");
+E("Despite (A) of the fact (B) that he studied hard, (C) he did (D) not pass the exam.",0,"Bagian A. Frasa yang benar “Despite the fact that …”. Kata “of” tidak dipakai setelah despite.");
+E("Although she (A) tired, she (B) is still (C) working (D) on the project.",0,"Bagian A. Klausa “Although she tired” kehilangan kata kerja bantu. Seharusnya “Although she is tired”.");
+E("The books required (A) for the course (B) is listed (C) at the university (D) bookstore.",1,"Bagian B. Subjeknya “The books” (jamak), jadi “are listed”, bukan “is listed”.");
+E("Between (A) you and I, there (B) isn’t (C) much difference (D) in results.",0,"Bagian A. Setelah preposisi dipakai bentuk objek: “Between you and me”.");
+E("They were discussing (A) whether (B) they should to implement (C) the new policy (D) next month.",1,"Bagian B. Setelah modal “should” dipakai kata kerja dasar tanpa “to”: “they should implement”.");
+E("Everyone in the class, including Jake, (A) have (B) to complete (C) the assignment (D) today.",0,"Bagian A. “Everyone” bersubjek singular, jadi “has to complete”.");
+E("Neither the proposal (A) nor the funding (B) were (C) adequate (D) for the project.",1,"Bagian B. Pada “neither … nor”, kata kerja mengikuti subjek terdekat, yaitu “funding” (singular). Jadi “was”, bukan “were”.");
+E("If she (A) would have known (B) about the issue, she (C) would have helped (D) prevent it.",0,"Bagian A. Conditional type 3: klausa if memakai past perfect, yaitu “had known”, bukan “would have known”.");
+E("More than fifty percent (A) of the students (B) has (C) completed (D) the survey.",1,"Bagian B. Subjeknya “students” (jamak), jadi “have completed”, bukan “has completed”.");
 
 /* ---------- STRUCTURE B: SENTENCE COMPLETION ---------- */
-q("SB","Despite ______ heavy rain, the event continued as planned.",["it was","of","it being","having been"],2,"Setelah “despite” harus ada kata benda atau gerund. “Despite it being heavy rain” memenuhi pola tersebut.");
+q("SB","______ the heavy rain, the event continued as planned.",["Although","Despite","Because","However"],1,"“Despite” diikuti frasa benda (“the heavy rain”) dan menyatakan pertentangan. “Although” harus diikuti klausa.");
 q("SB","I prefer coffee ______ tea in the morning.",["than","rather","to","over"],2,"Pola baku: “prefer X to Y”.");
 q("SB","She has been working here ______ five years.",["since","for","during","until"],1,"“For” dipakai untuk durasi (five years). “Since” dipakai untuk titik waktu.");
 q("SB","If I ______ enough money, I would buy a car.",["have","had","will have","would have"],1,"Conditional type 2: “If + past simple, would + verb”. Jadi “had”.");
@@ -175,67 +176,68 @@ q("SB","They advised us ______ early to avoid traffic.",["to leave","leaving","l
 q("SB","By the time you arrive, we ______ dinner.",["will finish","have finished","had finished","will have finished"],3,"“By the time” + present simple menandakan future perfect di klausa utama: “will have finished”.");
 q("SB","She’s used to ______ up early.",["get","getting","to get","got"],1,"“Be used to” (terbiasa) diikuti gerund: “getting”.");
 q("SB","I look forward ______ this book.",["read","reading","to read","to reading"],3,"“Look forward to” memakai “to” sebagai preposisi, jadi diikuti gerund: “to reading”.");
-q("SB","Not only the students ______ the lecture, but also the professor.",["enjoy","enjoys","enjoying","enjoyed"],0,"Kunci dokumen: “enjoy”. ⚠️ Catatan: pada pola “not only … but also …” kata kerja biasanya mengikuti subjek terdekat (“the professor”, singular), yaitu “enjoys”. Dokumen sumber sendiri menandai soal ini untuk ditinjau kembali.");
-q("SB","Although ______ busy, she attended the conference.",["she was","of being","being","was"],2,"Kunci dokumen: “being”. ⚠️ Catatan: bentuk yang lebih baku adalah “Although she was busy”. Dokumen sumber menandai soal ini untuk ditinjau kembali.");
-q("SB","He failed the test ______ he studied hard.",["but","and","although","so"],0,"Kunci dokumen: “but”. ⚠️ Catatan: secara makna, “although” lebih tepat untuk menyatakan pertentangan dalam satu kalimat. Dokumen sumber menandai soal ini untuk ditinjau kembali.");
+q("SB","Not only the students but also the professor ______ the lecture.",["enjoy","enjoys","enjoying","to enjoy"],1,"Pada “not only … but also …”, kata kerja mengikuti subjek terdekat (“the professor”, singular), yaitu “enjoys”.");
+q("SB","Although ______ busy, she attended the conference.",["she was","of being","in being","was"],0,"“Although” harus diikuti klausa lengkap (subjek + kata kerja): “Although she was busy”.");
+q("SB","He failed the test ______ he studied hard.",["but","and","although","so"],2,"“Although” menyatakan pertentangan: ia gagal meskipun sudah belajar keras. “But” tidak dipakai di tengah kalimat seperti ini tanpa koma dan membalik logika.");
 q("SB","It’s important that he ______ on time.",["arrives","arrive","arrived","arriving"],1,"Setelah “important that” dipakai subjunctive: kata kerja bentuk dasar tanpa -s.");
-q("SB","______ the weather is good, we’ll go hiking.",["If","Unless","Provided","Although"],2,"Kunci dokumen: “Provided (that)” yang berarti “asalkan”. Catatan: “If” juga masuk akal secara tata bahasa.");
-q("SB","They didn’t start until ______ the instructor arrived.",["when","until","although","after"],3,"“Until after” menandai bahwa mereka baru mulai sesudah instruktur datang.");
-q("SB","_________ to your suggestions, we improved the plan.",["Thanks","Thank","Thanks for","Thank to"],2,"Kunci dokumen: “Thanks for”. ⚠️ Catatan: idiom baku adalah “Thanks to your suggestions” (berkat saranmu). Dokumen sumber menandai soal ini untuk ditinjau kembali.");
-q("SB","She couldn’t go ______ being sick.",["because","despite","due","although"],1,"Kunci dokumen: “despite”. ⚠️ Catatan: secara makna, “because of” atau “due to” lebih pas (sakit adalah alasan tidak pergi). Dokumen sumber menandai soal ini untuk ditinjau kembali.");
+q("SB","______ the weather is good, we’ll go hiking.",["Unless","Provided","Although","Despite"],1,"“Provided (that)” berarti “asalkan”. “Unless” (kecuali) dan “although” membalik makna, sedangkan “despite” tidak diikuti klausa.");
+q("SB","They didn’t start the lesson ______ the instructor arrived.",["until","although","despite","unless"],0,"Pola “didn’t … until” berarti baru mulai setelah sesuatu terjadi.");
+q("SB","_________ your suggestions, we improved the plan.",["Thanks to","Thank","Thanks for","Thank to"],0,"Idiom baku: “Thanks to your suggestions” (berkat saranmu).");
+q("SB","She couldn’t go ______ being sick.",["because of","despite","because","although"],0,"Sakit adalah alasan tidak pergi, jadi “because of” (diikuti gerund). “Despite” menyatakan pertentangan, sedangkan “because” dan “although” harus diikuti klausa.");
 q("SB","He decided ______ a break before continuing.",["take","to take","taking","to taking"],1,"“Decide” diikuti to-infinitive: “to take”.");
 q("SB","The report must be submitted no later ______ Friday.",["with","than","of","for"],1,"Ungkapan tetap: “no later than” (paling lambat).");
-q("SB","We arrived ______ time for the presentation.",["in","at","on","to"],0,"“In time” berarti tiba tepat waktu atau cukup waktu. “On time” berarti sesuai jadwal.");
+q("SB","We arrived ______ time for the presentation.",["in","at","on","to"],0,"“In time” berarti tiba cukup waktu sebelum acara dimulai. “On time” berarti sesuai jadwal.");
 
 /* ---------- READING 1 ---------- */
 q("R1","What is the main idea?",["The history of plant classification","Why plants need soil nutrients","How photosynthesis works","How plants reproduce"],2,"Seluruh teks menjelaskan proses dan tahap utama fotosintesis.");
-q("R1","Which light colors does chlorophyll absorb?",["Green & yellow","Blue & red","Yellow & orange","Green & white"],1,"Teks menyebut eksplisit: “primarily in blue and red wavelengths”.");
+q("R1","Which light colors does chlorophyll absorb?",["Green & yellow","Blue & red","Yellow & orange","Green & white"],1,"Teks menyebut eksplisit: “primarily in the blue and red wavelengths”.");
 q("R1","What splits in the first stage?",["Glucose molecules","Carbon dioxide","Water molecules","Chlorophyll"],2,"Pada tahap pertama, molekul air terpecah sehingga menghasilkan oksigen.");
 q("R1","What is produced in the Calvin Cycle?",["Oxygen","ATP","Water","Glucose"],3,"Siklus Calvin mengubah CO₂ menjadi glukosa memakai ATP dan NADPH. Oksigen dan ATP dihasilkan di tahap pertama.");
-q("R1","Which factor does NOT affect photosynthesis?",["Light intensity","Carbon dioxide","Temperature","Soil pH"],3,"Faktor yang disebut hanyalah intensitas cahaya, CO₂, dan suhu. Soil pH tidak. Perhatikan kata NOT.");
-q("R1","Where does photosynthesis occur?",["Mitochondria","Chloroplasts","Nucleus","Ribosomes"],1,"Tercantum di awal paragraf: “In chloroplasts, chlorophyll captures light”.");
-q("R1","What is the effect of low temperature on photosynthesis?",["Increases","Stays constant","Decreases","Doubles"],2,"Kondisi suhu yang tidak optimal menurunkan efisiensi fotosintesis.");
-q("R1","What is the function of NADPH?",["Absorbs light","Splits water","Carries energy","Stores glucose"],2,"NADPH dan ATP membawa energi dari tahap pertama ke siklus Calvin.");
-q("R1","What does “engineered crops” mean?",["Crops grown without water","Genetically or biologically modified","Crops grown indoors only","Crops harvested by machines"],1,"“Engineered” berarti direkayasa, yaitu tanaman yang diubah secara genetik atau biologis agar lebih adaptif.");
-q("R1","Why is understanding photosynthesis important?",["To reduce sunlight","To increase pesticides","To improve crop adaptation","To replace chlorophyll"],2,"Disampaikan pada kalimat terakhir: pemahaman ini membantu meningkatkan adaptasi tanaman.");
+q("R1","Which factor does NOT affect photosynthesis according to the passage?",["Light intensity","Carbon dioxide","Temperature","Soil pH"],3,"Faktor yang disebut hanyalah intensitas cahaya, CO₂, dan suhu. Soil pH tidak. Perhatikan kata NOT.");
+q("R1","Where does photosynthesis occur?",["Mitochondria","Chloroplasts","Nucleus","Ribosomes"],1,"Tercantum di awal: “It takes place in chloroplasts”.");
+q("R1","What is the effect of low temperature on photosynthesis?",["Increases","Stays constant","Decreases","Doubles"],2,"Teks menyatakan bahwa pada suhu rendah proses fotosintesis melambat (menurun).");
+q("R1","What is the function of NADPH?",["Absorbs light","Splits water","Carries energy","Stores glucose"],2,"Teks menyebut ATP dan NADPH sebagai molekul yang membawa energi.");
+q("R1","What does “engineered crops” mean?",["Crops grown without water","Genetically modified crops","Crops grown indoors only","Crops harvested by machines"],1,"Teks menjelaskan sendiri: “engineered crops” adalah tanaman yang dimodifikasi secara genetik.");
+q("R1","Why is understanding photosynthesis important?",["To reduce sunlight","To increase pesticides","To improve crop adaptation","To replace chlorophyll"],2,"Kalimat terakhir: pemahaman fotosintesis membantu mengembangkan tanaman yang lebih mudah beradaptasi.");
 
 /* ---------- READING 2 ---------- */
 q("R2","What is the main idea?",["Causes of rural migration","History of city planning","Effects of urbanization on health","Advances in modern medicine"],2,"Teks berfokus pada dampak urbanisasi terhadap kesehatan masyarakat.");
-q("R2","Dense populations cause:",["Lower pollution","Disease spread","Better sanitation","Cheaper housing"],1,"Disebutkan langsung: urbanisasi membawa penularan penyakit.");
-q("R2","Which group is the most vulnerable?",["Government workers","Rural farmers","Urban poor","Wealthy residents"],2,"Kalimat kedua: “Poor people in cities are most at risk”, yaitu masyarakat miskin kota.");
-q("R2","What is NOT done by governments?",["Improving waste systems","Building hospitals","Promoting health education","Reducing green spaces"],3,"Pemerintah memperbaiki sistem limbah, rumah sakit, dan edukasi kesehatan. Mengurangi ruang hijau justru bertentangan dengan desain berkelanjutan.");
-q("R2","Sustainable design includes:",["More highways and factories","Larger parking areas","Green spaces and transit","Higher building density only"],2,"Desain berkelanjutan mencakup ruang hijau dan transportasi publik.");
-q("R2","Clean cities have fewer:",["Tourists","Respiratory illnesses","Schools","Hospitals"],1,"Kota yang bersih memiliki lebih sedikit penyakit pernapasan karena polusi berkurang.");
-q("R2","What does “overburdened sanitation” mean?",["Highly advanced","Overloaded/insufficient","Very cheap","Newly built"],1,"Sistem sanitasi tidak mampu menampung jumlah penduduk, jadi kelebihan beban atau tidak memadai.");
-q("R2","What is the purpose of health education?",["To increase hospital visits","To reduce population","To promote urbanization","To teach prevention"],3,"Edukasi kesehatan bertujuan mengajarkan pencegahan agar penyebaran penyakit berkurang.");
-q("R2","Which is NOT a public health measure?",["Waste management","Hospital improvement","Health campaigns","Urban sprawl"],3,"Urban sprawl (perluasan kota yang tidak terkendali) bersifat negatif dan bukan langkah kesehatan masyarakat.");
-q("R2","What can be inferred if cities lack sustainable design?",["Cities will naturally become healthier","Worse well-being","Poverty will disappear","Pollution has no effect"],1,"Karena desain berkelanjutan menurunkan penyakit dan meningkatkan kualitas hidup, tanpa itu kesejahteraan akan memburuk.");
+q("R2","Crowded cities cause:",["Lower pollution","Disease spread","Better sanitation","Cheaper housing"],1,"Disebutkan langsung: di kota padat, penyakit lebih mudah menyebar.");
+q("R2","Which group is the most vulnerable?",["Government workers","Rural farmers","The urban poor","Wealthy residents"],2,"Teks menyebut “Poor people in cities are most at risk”, yaitu masyarakat miskin kota.");
+q("R2","What is NOT done by governments according to the passage?",["Improving waste systems","Building hospitals","Promoting health education","Reducing green spaces"],3,"Pemerintah memperbaiki sistem limbah, rumah sakit, dan edukasi kesehatan. Mengurangi ruang hijau tidak disebut dan bertentangan dengan desain berkelanjutan.");
+q("R2","Sustainable design includes:",["More highways and factories","Larger parking areas","Green spaces and public transit","Higher building density only"],2,"Teks menyebut desain berkelanjutan mencakup ruang hijau dan transportasi publik.");
+q("R2","Cleaner cities have fewer:",["Tourists","Respiratory illnesses","Schools","Hospitals"],1,"Teks menyatakan kota yang lebih bersih memiliki lebih sedikit penyakit pernapasan.");
+q("R2","What does “overburdened sanitation” mean?",["Highly advanced","Overloaded and insufficient","Very cheap","Newly built"],1,"Teks menjelaskan: “overloaded and unable to handle the number of residents”.");
+q("R2","What is the purpose of health education?",["To increase hospital visits","To reduce population","To promote urbanization","To teach prevention"],3,"Teks menyebut edukasi kesehatan mengajarkan cara mencegah penyakit.");
+q("R2","Which is NOT a public health measure?",["Waste management","Hospital improvement","Health education campaigns","Unplanned urban sprawl"],3,"Urban sprawl yang tidak terencana justru memperburuk masalah, jadi bukan langkah kesehatan masyarakat.");
+q("R2","What can be inferred if cities lack sustainable design?",["Cities will naturally become healthier","Well-being will get worse","Poverty will disappear","Pollution will have no effect"],1,"Karena desain berkelanjutan menurunkan penyakit dan meningkatkan kualitas hidup, tanpa itu kesejahteraan akan memburuk.");
 
 /* ---------- READING 3 ---------- */
-q("R3","What is the main idea?",["The invention of the steam engine","Biography of reformers","Industrial Revolution effects","Agricultural decline"],2,"Teks membahas dampak sosial dan ekonomi Revolusi Industri.");
-q("R3","How were goods made before factories?",["By robots","By steam","By hand","By computers"],2,"Disebutkan di awal: “Before, goods were handmade”.");
-q("R3","Which issue is NOT mentioned?",["Labor problems","Higher factory output","Calls for reform","Low wages"],3,"Teks menyebut masalah tenaga kerja secara umum, tetapi tidak membahas upah rendah secara eksplisit.");
-q("R3","Reform movements aimed to:",["Reduce factory output","Improve worker conditions","Return to handmade production","Abolish machines"],1,"Reformis mendorong hukum ketenagakerjaan untuk memperbaiki kondisi pekerja.");
-q("R3","What happened by the mid-19th century?",["Factories were banned","Handmade goods returned","Implemented early regulations","Reformers disbanded"],2,"Kalimat terakhir: “By mid-19th century, regulations were made”.");
-q("R3","Steam engines were part of:",["Renaissance","Industrial Revolution","Cold War","Agricultural Era"],1,"Mesin uap merupakan bagian dari Revolusi Industri.");
-q("R3","What was a benefit of factories?",["Fewer jobs","Lower quality","Higher output","Handmade quality"],2,"Teks menyebut pabrik meningkatkan output, yaitu produktivitas naik drastis.");
-q("R3","Debates involved:",["Art vs. science","Growth vs. rights","Trade vs. travel","Religion vs. law"],1,"Perdebatan berkisar pada pertumbuhan industri versus hak-hak pekerja.");
-q("R3","What is the meaning of “mechanized looms”?",["Hand-operated looms","Machine-driven looms","Looms made of metal only","Abandoned looms"],1,"Mekanisasi berarti mesin menggantikan tenaga tangan manusia, jadi alat tenun digerakkan mesin.");
-q("R3","Pollution during the Industrial Revolution was:",["Nonexistent","Widespread","Minimal","Limited to farms"],1,"Polusi adalah salah satu konsekuensi utama dan menyebar luas.");
+q("R3","What is the main idea?",["The invention of the steam engine","Biography of reformers","Effects of the Industrial Revolution","Agricultural decline"],2,"Teks membahas perubahan produksi serta dampak sosial dan ekonomi Revolusi Industri.");
+q("R3","How were goods made before factories?",["By robots","By steam","By hand","By computers"],2,"Disebutkan di awal: “goods were handmade”.");
+q("R3","Which issue is NOT mentioned?",["Unsafe conditions","Higher factory output","Calls for reform","Low wages"],3,"Teks menyebut kondisi kerja tidak aman, output lebih tinggi, dan seruan reformasi, tetapi tidak membahas upah rendah.");
+q("R3","Reform movements aimed to:",["Reduce factory output","Improve worker conditions","Return to handmade production","Abolish machines"],1,"Reformis mendorong hukum ketenagakerjaan untuk melindungi dan memperbaiki kondisi pekerja.");
+q("R3","What happened by the mid-19th century?",["Factories were banned","Handmade goods returned","The first regulations were introduced","Reformers disbanded"],2,"Kalimat terakhir: pada pertengahan abad ke-19 regulasi pertama diperkenalkan.");
+q("R3","Steam engines were part of:",["The Renaissance","The Industrial Revolution","The Cold War","The Agricultural Era"],1,"Teks menyebut mesin uap sebagai salah satu penemuan Revolusi Industri.");
+q("R3","What was a benefit of factories?",["Fewer jobs","Lower quality","Higher output","Handmade quality"],2,"Teks menyebut pabrik menghasilkan jauh lebih banyak barang (higher output).");
+q("R3","The public debate was about:",["Art versus science","Growth versus workers’ rights","Trade versus travel","Religion versus law"],1,"Teks menyebut perdebatan tentang pertumbuhan ekonomi versus hak pekerja.");
+q("R3","What is the meaning of “mechanized looms”?",["Hand-operated looms","Machine-driven looms","Looms made of metal only","Abandoned looms"],1,"Teks menjelaskan: “looms driven by machines”.");
+q("R3","Pollution during the Industrial Revolution was:",["Nonexistent","Widespread","Minimal","Limited to farms"],1,"Teks menyebut polusi “spread widely in industrial cities”.");
 
 /* ---------- APP ---------- */
 const $=s=>document.querySelector(s);
 const L="ABCD";
 let list=[],idx=0,res=[],locked=false;
 
-// nomor per bagian
-const cnt={};D.forEach(d=>{cnt[d.s]=(cnt[d.s]||0)+1;d.n=cnt[d.s]+(d.s[0]==="R"?(d.s==="R2"?10:d.s==="R3"?20:0):0);});
-D.forEach((d,i)=>d.id=i);
+// nomor soal per bagian
+const cnt={};
+D.forEach(d=>{cnt[d.s]=(cnt[d.s]||0)+1;d.n=cnt[d.s]+(d.s==="R2"?10:d.s==="R3"?20:0);});
 
-function show(id){["menu","quiz","result"].forEach(x=>$("#"+x).classList.toggle("hide",x!==id));window.scrollTo(0,0);window.speechSynthesis&&speechSynthesis.cancel();}
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function show(id){["menu","quiz","result"].forEach(x=>$("#"+x).classList.toggle("hide",x!==id));window.scrollTo(0,0);}
 
 $("#start").onclick=()=>{
-  const g=[...document.querySelectorAll('.menu input[value]:checked')].map(i=>i.value);
+  const g=[...document.querySelectorAll('.menu input[type=checkbox][value]:checked')].map(i=>i.value);
   if(!g.length){alert("Pilih minimal satu materi.");return;}
   begin(D.filter(d=>g.includes(SEC[d.s].g)),$("#shuf").checked);
 };
@@ -252,32 +254,34 @@ function stats(){
   $("#pg").style.width=((ok+bad)/list.length*100)+"%";
 }
 function fmt(d){
-  let t=d.t.replace(/&/g,"&amp;").replace(/</g,"&lt;");
+  let t=esc(d.t);
   if(d.s==="SA")t=t.replace(/\((A|B|C|D)\)/g,'<b class="m">($1)</b>');
   return t;
 }
+function split(d){
+  // soal Listening: semua baris sebelum baris terakhir = transkrip, baris terakhir = pertanyaan
+  const k=d.t.lastIndexOf("\n");
+  return k>-1?{sc:d.t.slice(0,k),qs:d.t.slice(k+1)}:{sc:"",qs:d.t};
+}
 function render(){
   const d=list[idx],S=SEC[d.s],r=res[idx];locked=!!r;
-  const listen=S.g==="L";
   let h=`<span class="tag">${S.n} · Soal ${d.n}</span><p class="instr">${S.i}</p>`;
   if(S.p)h+=`<div class="passage">${S.p}</div>`;
-  if(listen)h+=`<button class="tts" id="tts" type="button">🔊 Putar audio</button>`;
-  h+=`<div class="qtext">${fmt(d)}</div><div id="opts">`;
-  d.o.forEach((o,i)=>{h+=`<button class="choice" data-i="${i}"><span class="l">${L[i]}</span><span>${d.s==="SA"?"Bagian "+o:o}</span></button>`;});
+  if(S.g==="L"){
+    const x=split(d);
+    h+=`<div class="script"><span class="slabel">Transkrip</span>${esc(x.sc)}</div><div class="qtext">${esc(x.qs)}</div>`;
+  }else{
+    h+=`<div class="qtext">${fmt(d)}</div>`;
+  }
+  h+=`<div id="opts">`;
+  d.o.forEach((o,i)=>{h+=`<button class="choice" data-i="${i}"><span class="l">${L[i]}</span><span>${d.s==="SA"?"Bagian "+o:esc(o)}</span></button>`;});
   h+=`</div><div id="fb"></div>`;
   $("#qcard").innerHTML=h;
   document.querySelectorAll(".choice").forEach(b=>b.onclick=()=>answer(+b.dataset.i));
-  const tb=$("#tts");if(tb)tb.onclick=()=>speak(d.t);
   $("#next").textContent=idx===list.length-1?"Lihat hasil":"Soal berikutnya";
   $("#next").disabled=!r;
   if(r)mark(r.pick);
   stats();
-}
-function speak(t){
-  if(!window.speechSynthesis){alert("Perangkat ini tidak mendukung audio otomatis. Silakan baca teks soal.");return;}
-  speechSynthesis.cancel();
-  const u=new SpeechSynthesisUtterance(t.replace(/^[AB]: /gm,"").replace(/\n/g,". "));
-  u.lang="en-US";u.rate=.92;speechSynthesis.speak(u);
 }
 function answer(i){
   if(locked)return;locked=true;
@@ -291,16 +295,23 @@ function mark(pick){
     if(i===d.a)b.classList.add("ok");
     else if(i===pick)b.classList.add("bad");
   });
-  const ans=L[d.a]+". "+d.o[d.a];
-  let note="";let e=d.e;
-  const k=e.indexOf("⚠️");
-  if(k>-1){note=e.slice(k);e=e.slice(0,k).trim();}
-  $("#fb").innerHTML=`<div class="fb ${c?"ok":"bad"}"><strong>${c?"✅ Benar!":"❌ Salah"}</strong>${c?"":"Jawaban yang benar: <b>"+ans+"</b><br>"}<b>Pembahasan:</b> ${e}${note?`<div class="note">${note}</div>`:""}</div>`;
+  const ans=L[d.a]+". "+(d.s==="SA"?"Bagian "+d.o[d.a]:d.o[d.a]);
+  $("#fb").innerHTML=`<div class="fb ${c?"ok":"bad"}"><strong>${c?"✅ Benar!":"❌ Salah"}</strong>${c?"":"Jawaban yang benar: <b>"+esc(ans)+"</b><br>"}<b>Pembahasan:</b> ${esc(d.e)}</div>`;
 }
 $("#next").onclick=()=>{
+  if($("#next").disabled)return;
   if(idx<list.length-1){idx++;render();window.scrollTo(0,0);}else finish();
 };
 $("#quit").onclick=()=>{if(confirm("Keluar dari kuis? Progres akan hilang."))show("menu");};
+
+// pintasan keyboard: A-D / 1-4 untuk memilih, Enter atau panah kanan untuk lanjut
+document.addEventListener("keydown",e=>{
+  if($("#quiz").classList.contains("hide")||e.ctrlKey||e.metaKey||e.altKey)return;
+  const k=e.key.toLowerCase(),m="abcd".indexOf(k),n="1234".indexOf(k);
+  const i=m>-1?m:n;
+  if(i>-1&&i<list[idx].o.length){answer(i);return;}
+  if((k==="enter"||k==="arrowright")&&!$("#next").disabled){e.preventDefault();$("#next").click();}
+});
 
 function finish(){
   const ok=res.filter(r=>r&&r.c).length,tot=list.length,bad=tot-ok;
@@ -311,9 +322,12 @@ function finish(){
   let rev="";
   wrong.forEach(({d,i})=>{
     const r=res[i];
-    rev+=`<div class="rev"><span class="tag">${SEC[d.s].n} · Soal ${d.n}</span><div class="qtext" style="font-size:15px">${fmt(d)}</div>`
-    +(r?`<div>Jawabanmu: <b style="color:var(--bad)">${L[r.pick]}. ${d.o[r.pick]}</b></div>`:"")
-    +`<div>Jawaban benar: <b style="color:var(--ok)">${L[d.a]}. ${d.o[d.a]}</b></div><div style="color:var(--mute);margin-top:4px">${d.e}</div></div>`;
+    const lab=(k)=>L[k]+". "+(d.s==="SA"?"Bagian "+d.o[k]:d.o[k]);
+    rev+=`<div class="rev"><span class="tag">${SEC[d.s].n} · Soal ${d.n}</span>`
+    +(SEC[d.s].p?`<div class="passage">${SEC[d.s].p}</div>`:"")
+    +`<div class="qtext" style="font-size:15px">${fmt(d)}</div>`
+    +(r?`<div>Jawabanmu: <b style="color:var(--bad)">${esc(lab(r.pick))}</b></div>`:"")
+    +`<div>Jawaban benar: <b style="color:var(--ok)">${esc(lab(d.a))}</b></div><div style="color:var(--mute);margin-top:4px">${esc(d.e)}</div></div>`;
   });
   $("#result").innerHTML=`<div class="hero"><h1>Hasil kuis</h1></div>
   <div class="card"><div class="score">${pct}%</div>
